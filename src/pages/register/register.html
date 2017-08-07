@@ -1,0 +1,132 @@
+<!--
+  Generated template for the RegisterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+        <button ion-button (click)="registerBack()">
+            <ion-icon  name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+  <form class="register-form" (submit)="doSignup()">
+  
+	<ion-slides (ionSlideDidChange)="slideChanged()" >
+		<ion-slide>
+			<ion-item>
+			<ion-card>
+			  <ion-card-header>
+			    MPesa - Safaricom Ltd
+			  </ion-card-header>
+			 </ion-card>
+			 </ion-item>
+		   
+		    <ion-item>
+		      <ion-label stacked>Mobile No</ion-label>
+		      <ion-badge item-left>+254</ion-badge>
+		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="number" placeholder="Mobile No" ></ion-input>
+		    </ion-item>
+		    
+		    <ion-item>
+		    	<ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp; &nbsp;</ion-badge>
+			    <button ion-button block (tap)="validateRegisterOTP()" >
+			      Validate
+			    </button>
+		    </ion-item>
+		    
+		    <ion-item [hidden]="!registerOTPSent">
+		      <ion-label stacked>Validation OTP</ion-label>
+		      <ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp;</ion-badge>
+		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="number" placeholder="OTP Code" ></ion-input>
+		    </ion-item>
+		    
+		</ion-slide>
+		<ion-slide>
+		    <ion-item>
+		      <ion-label stacked>Full Legal Names</ion-label>
+		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="text" placeholder="Full Legal Names" ></ion-input>
+		    </ion-item>
+		   
+		    <ion-item>
+		      <ion-label stacked>ID No./Passport</ion-label>
+		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="text" placeholder="ID No./Passport" ></ion-input>
+		    </ion-item>
+		   
+		    <ion-item>
+		      <ion-label stacked>D.O.B</ion-label>
+		      <ion-datetime name="today" displayFormat="DD-MM-YYYY" [(ngModel)]="today"></ion-datetime>
+		    </ion-item>
+		    
+		    <ion-item>
+		      <ion-label stacked>Employment Status</ion-label>
+		      <ion-select [(ngModel)]="employmentstatus" name="employmentstatus">
+			      <ion-option value="employed">Employed</ion-option>
+			      <ion-option value="selfemployed">Self Employed</ion-option>
+		      </ion-select>
+		    </ion-item>
+		    
+		    <ion-item>
+		      <ion-label stacked>Email</ion-label>
+		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="email" placeholder="e.g support@tmail.com" ></ion-input>
+		    </ion-item>
+
+		</ion-slide>
+		<ion-slide>
+		
+			
+			 <img class="avatar" id="photoImage" name="photoImage"/><br/>
+			 
+		
+		    <button ion-button block>
+		      Add Photo
+		    </button>
+		   
+
+		</ion-slide>
+	</ion-slides>
+	
+    <!-- <ion-item>
+      <ion-label stacked>Username</ion-label>
+      <ion-input [(ngModel)]="regData.username" name="username" type="text" placeholder="Your username" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input [(ngModel)]="regData.password" name="password" type="password" placeholder="Your password"></ion-input>
+    </ion-item>
+    
+    <button ion-button block type="submit">
+      SignUp
+    </button>
+     -->
+    
+  </form>
+  
+</ion-content>
+
+<ion-footer primary>
+   <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-Left (tap)="backSlide()" [hidden]="firstSlider">
+      	<ion-icon name="arrow-back"></ion-icon>
+        Back
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button icon-right end (tap)="nextSlide()" [hidden]="!registerOTPSent">
+        Next
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
