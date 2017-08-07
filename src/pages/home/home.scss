@@ -1,3 +1,38 @@
-page-home {
 
+page-home {
+  .scroll-content {
+    background: #EDEDED;
+  }
+
+  .home-card {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - -25px);
+    margin-left: -15px;
+
+    ion-card-content {
+      flex: 1 1 auto;
+    }
+    
+
+  }
+
+    
+  // Todo: remove when this issue https://github.com/ionic-team/ionic/issues/11212 is fixed
+  @media(min-width: 769px) {
+    .home-card {
+      height: 370px;
+    }
+  }
+
+  .home-card ion-card-header .item {
+    padding: 4px 16px;
+  }
+
+  .home-card ion-card-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
+
+

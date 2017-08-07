@@ -1,14 +1,89 @@
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+ 	<button ion-button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+    <ion-title>Home</ion-title>
+    <ion-buttons right>
+        <a href="http://example.com" class="round-button"><ion-icon name="log-out" item-right></ion-icon></a>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content padding class="page-home">
+  <ion-list no-lines>
+    <ion-grid fixed>
+      <ion-row align-items-stretch>
+
+        <ion-col col-12 col-md-6 align-self-stretch align-self-center  >
+
+          <ion-card class="home-card">
+            <ion-card-header>
+				<ion-item >
+					Loan Application
+				</ion-item>
+            </ion-card-header>
+
+            <ion-card-content class="outer-content">
+              <ion-list>
+                <button ion-item>
+                  <h3>You are eligible to borrow</h3>
+                </button>
+              </ion-list>
+            </ion-card-content>
+
+            <ion-row no-padding>
+              <ion-col col-3 col-lg-auto text-center text-lg-left>
+                <button ion-button clear small color="primary" >
+                  <ion-icon name="cash">&nbsp;&nbsp;&nbsp;&nbsp; </ion-icon>
+                  Apply Now
+                </button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card>
+
+          <ion-card class="home-card">
+            <ion-card-header>
+            	<ion-item >
+	               	Vuqa Evaluation
+	                <ion-avatar item-end>
+	                  <img src="assets/images/bronze.png" alt="">
+	                  	Bronze
+	                </ion-avatar>
+                </ion-item>
+            </ion-card-header>
+
+            <ion-card-content class="outer-content">
+              <ion-list>
+              	<ion-item>
+                  <h3>Congratulations! You qualify for KES 2,000</h3>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+
+            <ion-row no-padding>
+              <ion-col col-3 col-lg-auto text-center text-lg-left>
+                <button ion-button clear small color="primary" >
+                  <ion-icon name="apps">&nbsp;&nbsp;&nbsp;&nbsp;</ion-icon>
+                  View Evaluation
+                </button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card>
+          
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>

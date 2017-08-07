@@ -1,1 +1,55 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu id="leftMenu" [content]="content" type="overlay">
+	<ion-header>
+		<ion-toolbar>
+			<ion-title>Vuqa</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	
+	<ion-content>
+		<ion-card text-center class="hide-card" no-lines>
+		    <img src="assets/images/avatar.png" class="custom-avatar"/>
+		    <h2>
+		    	Boniface Ndungu 
+		    	<a href="http://example.com" class="round-button"><ion-icon name="create" item-right></ion-icon></a>
+		    </h2>
+		     <h2>
+		     	<ion-icon name="medal"></ion-icon>
+		    	Gold Member 
+		    </h2>
+		   
+		</ion-card>
+		
+		<ion-list>
+	        <ion-list-header>
+	          Navigate
+	        </ion-list-header>
+			<ion-item *ngFor="let p of navigatePages" (click)="openPage(p)">
+				<ion-icon [name]="p.icon" item-left></ion-icon>
+				{{p.title}}
+			</ion-item>
+			
+	        <ion-list-header>
+	          Others
+	        </ion-list-header>
+			<ion-item *ngFor="let p of otherPages" (click)="openPage(p)">
+				<ion-icon [name]="p.icon" item-left></ion-icon>
+				{{p.title}}
+			</ion-item>
+			
+	        <ion-list-header>
+	          Account
+	        </ion-list-header>
+			<ion-item *ngFor="let p of accountPages" (click)="openPage(p)">
+				<ion-icon [name]="p.icon" item-left></ion-icon>
+				{{p.title}}
+			</ion-item>
+			
+		</ion-list>
+	</ion-content>
+
+</ion-menu>
+
+
+<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+
+<!-- <ion-nav [root]="rootPage"></ion-nav> -->
