@@ -14,7 +14,7 @@
 	</button>
     <ion-title>Home</ion-title>
     <ion-buttons right>
-        <a href="http://example.com" class="round-button"><ion-icon name="log-out" item-right></ion-icon></a>
+        <!--<a href="http://example.com" class="round-button"><ion-icon name="log-out" item-right></ion-icon></a>   -->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -43,7 +43,7 @@
 
             <ion-row no-padding>
               <ion-col col-3 col-lg-auto text-center text-lg-left>
-                <button ion-button clear small color="primary" >
+                <button ion-button clear small color="primary" (click)="viewLoanApplication()">
                   <ion-icon name="cash">&nbsp;&nbsp;&nbsp;&nbsp; </ion-icon>
                   Apply Now
                 </button>
@@ -71,7 +71,7 @@
 
             <ion-row no-padding>
               <ion-col col-3 col-lg-auto text-center text-lg-left>
-                <button ion-button clear small color="primary" >
+                <button ion-button clear small color="primary"  (click)="viewEvaluation()">
                   <ion-icon name="apps">&nbsp;&nbsp;&nbsp;&nbsp;</ion-icon>
                   View Evaluation
                 </button>

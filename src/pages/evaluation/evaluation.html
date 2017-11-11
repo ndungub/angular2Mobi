@@ -1,0 +1,118 @@
+
+<ion-header>
+  <ion-navbar>
+ 	<button ion-button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	</button>
+    <ion-title>Evaluation</ion-title>
+    <ion-buttons right>
+        <!-- logout code -->
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  class="page-evaluation">
+ <div padding style="text-align: center;">
+	    <ion-item>
+		    <ion-thumbnail item-start>
+		      <img src="assets/images/silver.png">
+		    </ion-thumbnail>
+		    <h2>Current Status</h2>
+		    <p>{{statusrating}}</p>
+	    </ion-item>
+	  
+	    <ion-segment  [(ngModel)]="evaluation_tab">
+	        <ion-segment-button class="evalsegment" value="segmentbronze" tappable>
+	            Bronze
+	        </ion-segment-button>
+	        <ion-segment-button class="evalsegment" value="segmentsilver" tappable>
+	            Silver
+	        </ion-segment-button>
+	        <ion-segment-button class="evalsegment" value="segmentgold" tappable>
+	            Gold
+	        </ion-segment-button>
+	    </ion-segment>
+	    
+	    <div [ngSwitch]="evaluation_tab" class="paperbg content_margin">
+	
+	      <!-- Bronze -->
+	      <div *ngSwitchCase="'segmentbronze'"> 
+		    <ion-card >
+			      <ion-item>
+				    <h2>Bronze</h2>
+				    <p>KES 1,000 - KES 10,000</p>
+				  </ion-item>
+				  <img class="ratingmedal" src="assets/images/bronze.png" >
+				  
+				  <ion-card-content>
+				    <p>You want more? Grow you limit by borrowing as many times as possible and repay on time</p>
+				  </ion-card-content>
+			 
+			      <ion-row>
+				        <ion-col>
+				          <button ion-button icon-left clear small>
+				            <ion-icon name="text"></ion-icon>
+				            <div>Talk to us</div>
+				          </button>
+				        </ion-col>
+			      </ion-row>
+		 
+		    </ion-card>
+	        
+	      </div>
+	
+	      <!-- Silver-->
+	      <div *ngSwitchCase="'segmentsilver'">
+		    <ion-card >
+			      <ion-item>
+				    <h2>Silver</h2>
+				    <p>KES 10,001 - KES 50,000</p>
+				  </ion-item>
+				  <img class="ratingmedal" src="assets/images/silver.png" >
+				  
+				  <ion-card-content>
+				    <p>Unleash your borrowing potential by beating the 50k mark.</p>
+				  </ion-card-content>
+			 
+			      <ion-row>
+				        <ion-col>
+				          <button ion-button icon-left clear small>
+				            <ion-icon name="text"></ion-icon>
+				            <div>Talk to us</div>
+				          </button>
+				        </ion-col>
+			      </ion-row>
+		 
+		    </ion-card>
+	      </div>
+	
+	      <!-- Gold -->
+	      <div *ngSwitchCase="'segmentgold'">
+		    <ion-card >
+			      <ion-item>
+
+				    <h2>Gold</h2>
+				    <p>KES 50,001 - Above</p>
+				  </ion-item>
+				  <img class="ratingmedal" src="assets/images/gold.png" >
+				  
+				  <ion-card-content>
+				    <p>You can borrow as much you borrowing capability allows.</p>
+				  </ion-card-content>
+			 
+			      <ion-row>
+				        <ion-col>
+				          <button ion-button icon-left clear small>
+				            <ion-icon name="text"></ion-icon>
+				            <div>Talk to us</div>
+				          </button>
+				        </ion-col>
+			      </ion-row>
+		 
+		    </ion-card>
+	      </div>
+	    </div>
+	    
+	    
+</div>    
+</ion-content>

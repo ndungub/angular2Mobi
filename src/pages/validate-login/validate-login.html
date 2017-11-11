@@ -1,0 +1,37 @@
+<!--
+  Generated template for the ValidateLoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Validate Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="page-validate-login" padding>
+  <form class="validatelogin-form" #validateloginForm="ngForm" novalidate >
+    <ion-list >
+	   	<ion-row>
+		    <ion-col col-12>
+			    <ion-item >	
+			      <ion-label stacked>OTP Code</ion-label>
+			      <ion-input [(ngModel)]="validatelogin.otpcode" name=otpcode type="number" placeholder="OTP Code" #otpcode="ngModel" required></ion-input>
+			    </ion-item>
+		    </ion-col>
+	    </ion-row>
+		  <p ion-text [hidden]="otpcode.valid || submitted == false" color="danger" padding-left>
+			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Invalid OTP Code
+		</p>
+		<ion-row responsive-sm>
+			<ion-col>
+				<button ion-button (click)="doValidateLoginOTP(validateloginForm)" type="submit" block>Validate Code</button>
+			</ion-col>
+		</ion-row> 
+     </ion-list>  
+  </form>
+</ion-content>

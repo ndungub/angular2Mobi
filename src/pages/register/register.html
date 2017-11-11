@@ -20,27 +20,27 @@
 
 <ion-content padding>
   
-  <form class="register-form" (submit)="doSignup()">
+  <form class="register-form">
   
 	<ion-slides (ionSlideDidChange)="slideChanged()" >
 		<ion-slide>
 			<ion-item>
 			<ion-card>
-			  <ion-card-header>
-			    MPesa - Safaricom Ltd
-			  </ion-card-header>
+			  
+			   	<span> MPesa - Safaricom Ltd</span>
+			  
 			 </ion-card>
 			 </ion-item>
 		   
 		    <ion-item>
 		      <ion-label stacked>Mobile No</ion-label>
 		      <ion-badge item-left>+254</ion-badge>
-		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="number" placeholder="Mobile No" ></ion-input>
+		      <ion-input [(ngModel)]="regData.mobileno" name="mobileno" type="number" placeholder="Mobile No" ></ion-input>
 		    </ion-item>
 		    
 		    <ion-item>
 		    	<ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp; &nbsp;</ion-badge>
-			    <button ion-button block (tap)="validateRegisterOTP()" >
+			    <button ion-button block (tap)="SendSignUpOTP()" >
 			      Validate
 			    </button>
 		    </ion-item>
@@ -48,29 +48,29 @@
 		    <ion-item [hidden]="!registerOTPSent">
 		      <ion-label stacked>Validation OTP</ion-label>
 		      <ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp;</ion-badge>
-		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="number" placeholder="OTP Code" ></ion-input>
+		      <ion-input [(ngModel)]="regData.otpcode" name="otpcode" type="number" placeholder="OTP Code" ></ion-input>
 		    </ion-item>
 		    
 		</ion-slide>
 		<ion-slide>
 		    <ion-item>
 		      <ion-label stacked>Full Legal Names</ion-label>
-		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="text" placeholder="Full Legal Names" ></ion-input>
+		      <ion-input [(ngModel)]="regData.legalnames" name="legalnames" type="text" placeholder="Full Legal Names" ></ion-input>
 		    </ion-item>
 		   
 		    <ion-item>
 		      <ion-label stacked>ID No./Passport</ion-label>
-		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="text" placeholder="ID No./Passport" ></ion-input>
+		      <ion-input [(ngModel)]="regData.idno" name="idno" type="text" placeholder="ID No./Passport" ></ion-input>
 		    </ion-item>
 		   
 		    <ion-item>
 		      <ion-label stacked>D.O.B</ion-label>
-		      <ion-datetime name="today" displayFormat="DD-MM-YYYY" [(ngModel)]="today"></ion-datetime>
+		      <ion-datetime [(ngModel)]="regData.dob" name="dob" displayFormat="DD-MM-YYYY" [(ngModel)]="today"></ion-datetime>
 		    </ion-item>
 		    
 		    <ion-item>
 		      <ion-label stacked>Employment Status</ion-label>
-		      <ion-select [(ngModel)]="employmentstatus" name="employmentstatus">
+		      <ion-select [(ngModel)]="regData.employmentstatus" name="employmentstatus">
 			      <ion-option value="employed">Employed</ion-option>
 			      <ion-option value="selfemployed">Self Employed</ion-option>
 		      </ion-select>
@@ -78,20 +78,41 @@
 		    
 		    <ion-item>
 		      <ion-label stacked>Email</ion-label>
-		      <ion-input [(ngModel)]="regData.username" name="mobileno" type="email" placeholder="e.g support@tmail.com" ></ion-input>
+		      <ion-input [(ngModel)]="regData.email" name="email" type="email" placeholder="e.g support@vuqa.com" ></ion-input>
 		    </ion-item>
 
 		</ion-slide>
 		<ion-slide>
+
+			 <img [src]="photoImage"  class="avatar" id="photoImage" name="photoImage" /> 
+			 <!--<ion-col col-6 >
+			        <ion-card class="block">
+			          <img [src]="photoImage" *ngIf="photoImage" class="avatar"/>
+			          <ion-icon name="trash" class="deleteIcon" (click)="uploadActionSheet()"></ion-icon>
+			        </ion-card>
+			</ion-col>-->
 		
-			
-			 <img class="avatar" id="photoImage" name="photoImage"/><br/>
-			 
-		
-		    <button ion-button block>
+		    <button ion-button block (click)="uploadActionSheet()">
 		      Add Photo
 		    </button>
 		   
+
+		</ion-slide>
+		<ion-slide>
+			<div class="register-logo">
+					<!--  <img src="http://lorempixel.com/g/640/480/technics" />-->
+					<img src="assets/images/logo.png" />
+					<div class="register-title" text-wrap>
+						
+						Registration Complete!
+					</div>
+			</div>
+		    <ion-item>
+		      <h2><span>Thank You</span></h2> 
+		    </ion-item>
+		    <ion-item>
+		      <span>Your Subscription is being reviewed you will get a response within 24hrs</span> 
+		    </ion-item>
 
 		</ion-slide>
 	</ion-slides>
@@ -117,14 +138,20 @@
 <ion-footer primary>
    <ion-toolbar color="primary">
     <ion-buttons left>
-      <button ion-button icon-Left (tap)="backSlide()" [hidden]="firstSlider">
+      <button ion-button icon-Left (tap)="backSlide()" [hidden]="firstSlider || lastSlider">
       	<ion-icon name="arrow-back"></ion-icon>
         Back
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button icon-right end (tap)="nextSlide()" [hidden]="!registerOTPSent">
+      <button ion-button icon-right end (tap)="nextSlide()" [hidden]="!registerOTPSent || lastSlider">
         Next
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button ion-button icon-right end (tap)="nextSlide()" [hidden]="!lastSlider">
+        	Close
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </ion-buttons>

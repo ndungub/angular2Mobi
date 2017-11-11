@@ -1,8 +1,16 @@
-import { Component,ViewChild } from '@angular/core';
-import { NavController, Nav, Slides, LoadingController, ToastController } from 'ionic-angular';
+import { Injectable, Component,ViewChild } from '@angular/core';
+import { NavController, Nav, Slides, LoadingController, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+
+import {Observable} from 'rxjs/Rx';
+import { RequestModel } from '../../model/requestModel'
+
+import { Camera } from '@ionic-native/camera';
+//import {Transfer, TransferObject} from '@ionic-native/transfer';
+import {File} from '@ionic-native/file';
+
 
 /**
  * Generated class for the RegisterPage page.
@@ -14,15 +22,26 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
+  providers: [[Camera]]
 })
+@Injectable()
 export class RegisterPage {
 	
 	@ViewChild(Slides) slides: Slides;
 	public firstSlider = true;
+	public lastSlider = false;
 	public registerOTPSent = false;
+	public photoImage: string;
+
 	
 	loading: any;
-	regData = { username:'', password:'' };
+	regData = {mobileno: ''};
+	validateData = {};
+	today;
+	dob;
+	options:any;
+
+	//response =  new RequestModel();
 	
 	ngOnInit() {
 	    this.slides.lockSwipes(true); // Lock the slides
@@ -33,29 +52,220 @@ export class RegisterPage {
 		}
 	  };
 	  
-	  today
+	  
 	  
 	
-    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController,private camera: Camera,private actionSheetCtrl: ActionSheetController, private file: File) {
     	this.today = new Date().toISOString();
+    	this.dob = new Date().toISOString();
     	
     }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');
   };
-  
-  doSignup() {
+
+
+  SendSignUpOTP() {
+	  
+	  
 	    this.showLoader();
-	    this.authService.register(this.regData).then((result) => {
-	      this.loading.dismiss();
-	      this.navCtrl.pop();
-	    }, (err) => {
-	      this.loading.dismiss();
-	      this.presentToast(err);
+	    let registerOperation:Observable<RequestModel>;
+	    
+	    let data = {};
+	    data['data'] = this.regData;
+	    this.loading.present().then(() => {
+	    	registerOperation = this.authService.sendRegisterOTP(data);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	this.validateData = response;
+	                	if(response.retcode == "000"){
+	                		this.registerOTPSent = true;
+	                	}else{
+	                		
+	                		this.showAlert(response.retmsg,"Vuqa");
+	                	}
+
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
+	    });
+	    
+  };
+
+  ValidateSignUpOTP()  {
+	  this.showLoader();
+	    let registerOperation:Observable<RequestModel>;
+	    
+	    let data = {};
+	    data['data'] = this.regData;
+	    this.loading.present().then(() => {
+	    	registerOperation = this.authService.validateRegisterOTP(data);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	this.validateData = response;
+	                	
+	                	if(response.retcode == "000"){
+	                		
+	                		this.slides.lockSwipes(false);
+	                	    this.slides.slideNext();
+	                	    this.slides.lockSwipes(true);
+	                	    
+	                	}else{
+	                		
+	                		this.showAlert(response.retmsg,"Vuqa");
+	                	}
+
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
 	    });
   };
   
+  ValidateSignUpBIO(){
+	  this.slides.lockSwipes(false);
+	  this.slides.slideNext();
+	  this.slides.lockSwipes(true);
+  };
+  
+  SubmitSignUpBIO()  {
+	  this.showLoader();
+	    let registerOperation:Observable<RequestModel>;
+	    
+	    let data = {};
+	    data['data'] = this.regData;
+	    this.loading.present().then(() => {
+	    	registerOperation = this.authService.validateRegisterBIO(data);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	this.validateData = response;
+	                	
+	                	if(response.retcode == "000"){
+	                		this.slides.lockSwipes(false);
+	                	    this.slides.slideNext();
+	                	    this.slides.lockSwipes(true);
+	                	    this.showAlert(response.retmsg,"Vuqa");
+	                	}else{
+	                		
+	                		this.showAlert(response.retmsg,"Vuqa");
+	                	}
+
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
+	    });
+  };
+  
+  MakeFileUpload(imageData)  {
+
+	 
+	  /*'use strict';
+
+	  const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+		  const byteCharacters = atob(b64Data);
+		  const byteArrays = [];
+		  
+		  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+		    const slice = byteCharacters.slice(offset, offset + sliceSize);
+		    
+		    const byteNumbers = new Array(slice.length);
+		    for (let i = 0; i < slice.length; i++) {
+		      byteNumbers[i] = slice.charCodeAt(i);
+		    }
+		    
+		    const byteArray = new Uint8Array(byteNumbers);
+		    
+		    byteArrays.push(byteArray);
+		  }
+		  
+		  const blob = new Blob(byteArrays, {type: contentType});
+		  return blob;
+		};
+		
+		const contentType = 'image/png';
+		const blob = b64toBlob(imageData, contentType);
+		*/
+	 
+
+	  let _self = this;
+	  this.file.resolveLocalFilesystemUrl(imageData).then((fileEntry: any) => {
+		  fileEntry.file(function(file) {
+			  let reader = new FileReader();
+			  reader.onloadend = function(encodedFile: any) {
+				  //let src = encodedFile.target.result;
+
+				  let imgBlob = new Blob([ encodedFile.target.result ], { type: "image/png" } );
+				  
+				  let registerOperation:Observable<RequestModel>;
+			    	registerOperation = _self.authService.makeFileUpload(imgBlob,'72','mobilephotoimage');
+			    	registerOperation.subscribe(
+			    			response => {
+			    				_self.showAlert("Photo Uploaded Successfully","Vuqa");
+			                }, 
+			                err => {
+			                    // Log errors if any
+			                	_self.showAlert(err,"Vuqa");
+			       });
+			  }; 
+			  reader.readAsArrayBuffer(file);
+          }, function(err) {
+        	  this.showAlert(err,"Vuqa");
+          });  
+		    
+	  }, (err) => {
+		  _self.showAlert(err,"Vuqa");
+	  });  
+
+		
+
+  }; 
+  
+  takePhoto(){
+	  this.options = {
+		        quality: 100,
+		        sourceType: this.camera.PictureSourceType.CAMERA,
+		        saveToPhotoAlbum: true,
+		        correctOrientation: true,
+		        destinationType: this.camera.DestinationType.DATA_URL,
+		        mediaType: this.camera.MediaType.PICTURE
+		      }
+			  this.camera.getPicture(this.options).then((imageData) => {
+				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
+			    }, (err) => {
+			    	this.showAlert(err,"Vuqa");
+		      }); 
+  };
+  
+  browsePhoto(){
+	  this.options = {
+		        quality: 100,
+		        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+		        saveToPhotoAlbum: true,
+		        correctOrientation: true,
+		        destinationType: this.camera.DestinationType.DATA_URL,
+		        mediaType: this.camera.MediaType.PICTURE
+		      }
+			  this.camera.getPicture(this.options).then((imageData) => {
+				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
+				  //this.MakeFileUpload(imageData);
+				  console.log('rrr')
+			    }, (err) => {
+			    	this.showAlert(err,"Vuqa");
+		      }); 	  
+  };
+
   public registerBack() {
 		this.nav.setRoot(LoginPage);
 		//this.navCtrl.push(tile.component);
@@ -86,13 +296,20 @@ export class RegisterPage {
   
   nextSlide(){
   	    let currentIndex = this.slides.getActiveIndex();
-	    if(currentIndex == 2){
-	    	 this.nav.setRoot(HomePage);
+  	    let slidenext = false;
+  	    
+	    if(currentIndex == 0){
+	    	return this.ValidateSignUpOTP();	
+	    }else if(currentIndex == 1){
+	    	return this.ValidateSignUpBIO();
+	    }else if(currentIndex == 2){
+	    	return this.SubmitSignUpBIO();
+	    	//this.MakeFileUpload();
+	    }else if(currentIndex == 3){
+	    	this.nav.setRoot(LoginPage);
 	    }
 	    
-	    this.slides.lockSwipes(false);
-	    this.slides.slideNext();
-	    this.slides.lockSwipes(true);
+	    
 	    
 
 
@@ -108,6 +325,7 @@ export class RegisterPage {
 	    if(previousIndex == 1){
 	    	this.firstSlider = true;
 	    }
+	    
   };
   
   slideChanged() {
@@ -117,11 +335,43 @@ export class RegisterPage {
 	    if (currentIndex == 0) {
 	    	this.firstSlider = true;
 		}
+	    if(currentIndex == 3){
+	    	this.lastSlider = true;
+	    }
   };
   
-  validateRegisterOTP() {
+  /*validateRegisterOTP() {
 	  this.registerOTPSent = true;
-  };
+  };*/
   
+  showAlert(msg,title) {
+	  let alert = this.alertCtrl.create({
+	    title: title,
+	    subTitle: msg,
+	    buttons: ['Dismiss']
+	  });
+	  alert.present();
+	};
+	
+ uploadActionSheet() {
+	   let actionSheet = this.actionSheetCtrl.create({
+	     title: 'Modify your album',
+	     buttons: [
+	       {
+	         text: 'Take Photo',
+	         handler: () => {
+	        	 this.takePhoto();
+	         }
+	       },
+	       {
+	         text: 'Browse Photo',
+	         handler: () => {
+	           this.browsePhoto();
+	         }
+	       }
+	     ]
+	   });
 
+	   actionSheet.present();
+ };
 }

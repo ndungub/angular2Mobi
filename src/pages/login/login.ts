@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NavController, Nav, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, Nav, LoadingController,AlertController, ToastController } from 'ionic-angular';
+
+//Services
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { ShareServiceProvider } from '../../providers/share-service/share-service';
+import { ValidateLoginPage } from '../validate-login/validate-login';
 import { RegisterPage } from '../register/register';
 import { TabsPage } from '../tabs/tabs';
 import { Tile } from './models/tile.model';
+
+import {Observable} from 'rxjs/Rx';
+import { RequestModel } from '../../model/requestModel'
 
 /**
  * Generated class for the LoginPage page.
@@ -21,13 +28,12 @@ export class LoginPage {
 	loading: any;
     loginData = { mobileno:'', pinno:'' };
     data: any;
-    authData = {};
     public tiles: Tile[][];
     submitted = false;
+   
     
     
-    
-    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider,  public loadingCtrl: LoadingController,private alertCtrl: AlertController, private toastCtrl: ToastController) {
     	this.initTiles();
     };
    
@@ -60,25 +66,53 @@ export class LoginPage {
     this.submitted = true;
 
     if (form.valid) {
-	    this.authData = {loginData: this.loginData};
-	   
-	    this.showLoader();
-	    this.authService.login(this.authData).then((result) => {
-	      this.loading.dismiss();
-	      this.data = result;
-	      localStorage.setItem('token', this.data.access_token);
-	      this.navCtrl.setRoot(TabsPage);
-	    }, (err) => {
-	      this.loading.dismiss();
-	      this.presentToast(err);
+    	this.showLoader();
+	    let registerOperation:Observable<RequestModel>;
+	    //authData = {};
+	    
+	    let hashed:any;
+    	hashed = this.authService.encryptSalt(this.loginData.pinno);
+    	this.loginData['encrypted'] = hashed.encrypted;
+    	this.loginData['iv'] = hashed.iv;
+    	this.loginData['key'] = hashed.key;
+    	
+	    let authData = {data: this.loginData};
+	    this.loading.present().then(() => {
+	    	
+	    	registerOperation = this.authService.sendLoginOPT(authData);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	if(response.retcode == "000"){
+	                		this.nav.setRoot(ValidateLoginPage);
+	                		
+	                		this.shareService.setLoginSessionMobileNo(this.loginData.mobileno);
+	                		
+	                	}else{
+	                		
+	                		this.showAlert(response.retmsg,"Vuqa");
+	                	}
+
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
 	    });
 	  }
 	};
-	  
+	
+	forgotPassword(){
+		
+	};
     register() {
     	this.nav.setRoot(RegisterPage);
 	    //this.navCtrl.push(RegisterPage);
-    }
+    };
+    socialLogin() {
+    	this.showAlert('Coming Soon...','Vuqa');
+    };
 
   showLoader(){
     this.loading = this.loadingCtrl.create({
@@ -102,5 +136,12 @@ export class LoginPage {
 
 	    toast.present();
   };
-
+  showAlert(msg,title) {
+	  let alert = this.alertCtrl.create({
+	    title: title,
+	    subTitle: msg,
+	    buttons: ['Dismiss']
+	  });
+	  alert.present();
+	};
 }

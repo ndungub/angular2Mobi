@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController,App, LoadingController, ToastController } from 'ionic-angular';
+import { App, NavController, Nav, LoadingController, ToastController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { LoginPage } from '../login/login';
+import { EvaluationPage } from '../evaluation/evaluation';
+import { LoanapplicationPage } from '../loanapplication/loanapplication';
 
 /**
  * Generated class for the HomePage page.
@@ -18,7 +20,7 @@ export class HomePage {
   loading: any;
   isLoggedIn: boolean = false;
   
-  constructor(public app: App, public navCtrl: NavController, public authService: AuthServiceProvider, public loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+  constructor(public app: App, public navCtrl: NavController,  public nav: Nav, public authService: AuthServiceProvider, public loadingCtrl: LoadingController, private toastCtrl: ToastController) {
     if(localStorage.getItem("token")) {
       this.isLoggedIn = true;
     }
@@ -62,5 +64,10 @@ export class HomePage {
 	    toast.present();
 	  }
 
-
+	  viewEvaluation() {
+		  	this.nav.setRoot(EvaluationPage);
+	  }
+	  viewLoanApplication() {
+		  	this.nav.setRoot(LoanapplicationPage);
+	  }
 }

@@ -1,0 +1,17 @@
+page-loanapplication {
+	.application-logo {
+		position: relative;
+		
+		.application-title {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: 0;
+			border: 0;
+			background: rgba(255, 255, 255, 0.6);
+			padding: 10px;
+		}
+	}
+
+}
