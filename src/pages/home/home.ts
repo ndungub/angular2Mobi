@@ -31,16 +31,7 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
   }
   
-  logout() {
-	    this.authService.logout().then((result) => {
-	      this.loading.dismiss();
-	      let nav = this.app.getRootNav();
-	      nav.setRoot(LoginPage);
-	    }, (err) => {
-	      this.loading.dismiss();
-	      this.presentToast(err);
-	    });
-	  }
+
 
 	  showLoader(){
 	    this.loading = this.loadingCtrl.create({

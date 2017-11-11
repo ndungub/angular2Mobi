@@ -99,7 +99,21 @@ export class AuthServiceProvider {
                        				error.json().error || 'Server error'
                        		));
   };
-  
+
+  changePIN (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanchangepin', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+   
   sendRegisterOTP (body: Object): Observable<RequestModel> {
       let bodyString = JSON.stringify(body); // Stringify payload
       let headers = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
@@ -207,8 +221,18 @@ export class AuthServiceProvider {
 	  
   };
   
-  logout(){
-	    return new Promise((resolve, reject) => {
+  logout(): Observable<RequestModel> {
+      let headers = new Headers({ 'Content-Type': 'application/json','X-Auth-Token': localStorage.getItem('token') });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'logout','', options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+	    /*return new Promise((resolve, reject) => {
 	        let headers = new Headers();
 	        headers.append('X-Auth-Token', localStorage.getItem('token'));
 
@@ -218,7 +242,7 @@ export class AuthServiceProvider {
 	          }, (err) => {
 	            reject(err);
 	          });
-	    });
+	    });*/
 	};
 
 }

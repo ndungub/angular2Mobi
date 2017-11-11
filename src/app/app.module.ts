@@ -18,6 +18,7 @@ import { LoanapplicationPage } from '../pages/loanapplication/loanapplication';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
+import { ChangePinPage } from '../pages/change-pin/change-pin';
 import {File} from '@ionic-native/file';
 
 
@@ -32,7 +33,8 @@ import {File} from '@ionic-native/file';
     EvaluationPage,
     LoanapplicationPage,
     AboutPage,
-    ContactPage
+    ContactPage,
+    ChangePinPage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,8 @@ import {File} from '@ionic-native/file';
     EvaluationPage,
     LoanapplicationPage,
     AboutPage,
-    ContactPage
+    ContactPage,
+    ChangePinPage
     
   ],
   providers: [
