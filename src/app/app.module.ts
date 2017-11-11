@@ -10,6 +10,7 @@ import { ShareServiceProvider } from '../providers/share-service/share-service';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
+import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 import { ValidateLoginPage } from '../pages/validate-login/validate-login';
 import { RegisterPage } from '../pages/register/register';
 import { EvaluationPage } from '../pages/evaluation/evaluation';
@@ -24,6 +25,7 @@ import {File} from '@ionic-native/file';
   declarations: [
     MyApp,
     LoginPage,
+    ForgotPasswordPage,
     ValidateLoginPage,
     RegisterPage,
     HomePage,
@@ -41,6 +43,7 @@ import {File} from '@ionic-native/file';
   entryComponents: [
     MyApp,
     LoginPage,
+    ForgotPasswordPage,
     ValidateLoginPage,
     RegisterPage,
     HomePage,

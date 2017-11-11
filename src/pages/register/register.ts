@@ -36,7 +36,6 @@ export class RegisterPage {
 	
 	loading: any;
 	regData = {mobileno: ''};
-	validateData = {};
 	today;
 	dob;
 	options:any;
@@ -46,10 +45,6 @@ export class RegisterPage {
 	ngOnInit() {
 	    this.slides.lockSwipes(true); // Lock the slides
 	    let currentIndex = this.slides.getActiveIndex();
-	    
-	    if (currentIndex == 0) {
-			console.log("");
-		}
 	  };
 	  
 	  
@@ -67,8 +62,6 @@ export class RegisterPage {
 
 
   SendSignUpOTP() {
-	  
-	  
 	    this.showLoader();
 	    let registerOperation:Observable<RequestModel>;
 	    
@@ -79,7 +72,6 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	if(response.retcode == "000"){
 	                		this.registerOTPSent = true;
 	                	}else{
@@ -108,7 +100,6 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	
 	                	if(response.retcode == "000"){
 	                		
@@ -147,7 +138,6 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	
 	                	if(response.retcode == "000"){
 	                		this.slides.lockSwipes(false);
@@ -308,11 +298,6 @@ export class RegisterPage {
 	    }else if(currentIndex == 3){
 	    	this.nav.setRoot(LoginPage);
 	    }
-	    
-	    
-	    
-
-
   };
   
   backSlide(){

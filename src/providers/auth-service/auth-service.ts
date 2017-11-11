@@ -58,6 +58,48 @@ export class AuthServiceProvider {
                        		));
   };
   
+  sendForgotPinOTP (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpindetails', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+  
+  validateSendForgotPinOTP (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpinvalidateotp', body, options) 
+               .map((res:Response) =>
+               		res.json())
+               .catch((error:any) => 
+               		Observable.throw(
+               				error.json().error || 'Server error'
+               		));
+  };
+  
+  resetForgotPIN (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpin', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+  
   sendRegisterOTP (body: Object): Observable<RequestModel> {
       let bodyString = JSON.stringify(body); // Stringify payload
       let headers = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON

@@ -23,7 +23,8 @@ export class RequestModel {
 
 export class Results {
     constructor(
-        public name: string,
+    	public mobileno: string,
+    	public name: string,
         public idno: string,
         public idtypedesc: string,
         public medal: string,

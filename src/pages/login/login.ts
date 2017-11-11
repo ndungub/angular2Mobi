@@ -8,6 +8,8 @@ import { ShareServiceProvider } from '../../providers/share-service/share-servic
 import { ValidateLoginPage } from '../validate-login/validate-login';
 import { RegisterPage } from '../register/register';
 import { TabsPage } from '../tabs/tabs';
+import { ForgotPasswordPage } from '../forgot-password/forgot-password';
+
 import { Tile } from './models/tile.model';
 
 import {Observable} from 'rxjs/Rx';
@@ -104,6 +106,7 @@ export class LoginPage {
 	};
 	
 	forgotPassword(){
+		this.nav.setRoot(ForgotPasswordPage);
 		
 	};
     register() {
