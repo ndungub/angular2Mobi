@@ -26,7 +26,7 @@ export class AuthServiceProvider {
   constructor(public http: Http) {
 	  this.progress$ = new Observable(observer => {
 	        this.progressObserver = observer
-	    });
+	  });
   }
   
 

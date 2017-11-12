@@ -68,7 +68,7 @@ export class LoginPage {
     this.submitted = true;
 
     if (form.valid) {
-    	this.showLoader();
+    	this.showLoader('Authenticating...');
 	    let registerOperation:Observable<RequestModel>;
 	    //authData = {};
 	    
@@ -117,9 +117,9 @@ export class LoginPage {
     	this.showAlert('Coming Soon...','Vuqa');
     };
 
-  showLoader(){
+  showLoader(msg){
     this.loading = this.loadingCtrl.create({
-        content: 'Authenticating...'
+        content: msg
     });
 
     this.loading.present();

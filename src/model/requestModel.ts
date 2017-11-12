@@ -1,17 +1,3 @@
-/*export class RequestModel {
-   retcode: string;
-   retmsg: string;
-   //results: string;
-   results: Results;
-   constructor() {}
-   
-   export class Results {
-	   public name: string;
-       public idno: string;
-   }
-   constructor(){}
-} */
-
 export class RequestModel {
     constructor(
         public retcode: string,

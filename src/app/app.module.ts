@@ -20,6 +20,7 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
 import {File} from '@ionic-native/file';
+import { LoanServiceProvider } from '../providers/loan-service/loan-service';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import {File} from '@ionic-native/file';
     File,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    ShareServiceProvider
+    ShareServiceProvider,
+    LoanServiceProvider
   ]
 })
 export class AppModule {}
