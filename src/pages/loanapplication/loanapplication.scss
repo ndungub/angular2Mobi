@@ -1,17 +1,28 @@
 page-loanapplication {
-	.application-logo {
-		position: relative;
 		
-		.application-title {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			margin: 0;
-			border: 0;
-			background: rgba(255, 255, 255, 0.6);
-			padding: 10px;
+		.loanapplication-title {
+			text-align: center;
 		}
-	}
-
+		.loanapplication-circular {
+ 			width: 200px;
+			height: 200px;
+			border: 10px solid #da1921;
+			background-color: #da1921;
+ 			background-image: url('assets/images/blank.png');
+ 			background-size: cover;
+ 			display: block;
+ 			border-radius: 100px;
+ 			-webkit-border-radius: 100px;
+ 			-moz-border-radius: 100px;
+ 			margin-left: 15%;
+		}
+		.centered {
+			position: absolute;
+			text-align: center;
+			top: 60%;
+			left: 45%;
+			transform: translate(-50%, -50%);
+			margin-left: 25px;
+			margin-top: 15px; 
+		}
 }

@@ -15,6 +15,7 @@ import { ValidateLoginPage } from '../pages/validate-login/validate-login';
 import { RegisterPage } from '../pages/register/register';
 import { EvaluationPage } from '../pages/evaluation/evaluation';
 import { LoanapplicationPage } from '../pages/loanapplication/loanapplication';
+import { LoansPage } from '../pages/loans/loans';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -33,6 +34,7 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     HomePage,
     EvaluationPage,
     LoanapplicationPage,
+    LoansPage,
     AboutPage,
     ContactPage,
     ChangePinPage
@@ -52,6 +54,7 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     HomePage,
     EvaluationPage,
     LoanapplicationPage,
+    LoansPage,
     AboutPage,
     ContactPage,
     ChangePinPage

@@ -9,7 +9,7 @@ import { ShareServiceProvider } from '../../providers/share-service/share-servic
 import { LoanServiceProvider } from '../../providers/loan-service/loan-service';
 
 import {Observable} from 'rxjs/Rx';
-import { LoanApplicationModel } from '../../model/loanApplicationModel'
+import { LoanApplicationModel } from '../../model/loanApplicationModel';
 /**
  * Generated class for the LoanapplicationPage page.
  *
@@ -28,6 +28,8 @@ export class LoanapplicationPage {
 	loanamounts: Amounts[] = [];
 	loanperiods: Periods[] = [];
 	loanapplicationData = { loanamount:'', loanperiod:'' };
+	
+	qualifiedAmout:number;
 
 
 	    
@@ -47,6 +49,7 @@ export class LoanapplicationPage {
 	                	this.loading.dismiss();
 	                	if(response.retcode == "000"){
 	                		this.loadLoanAmount(this.shareService.getEligibleAmount(),response.results.maxloanterm);
+	                		this.qualifiedAmout = this.shareService.getEligibleAmount();
 	                	}else{
 	                		
 	                		this.showAlert(response.retmsg,"Vuqa");

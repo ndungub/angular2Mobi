@@ -4,6 +4,7 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { LoginPage } from '../login/login';
 import { EvaluationPage } from '../evaluation/evaluation';
 import { LoanapplicationPage } from '../loanapplication/loanapplication';
+import { LoansPage } from '../loans/loans';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 
 /**

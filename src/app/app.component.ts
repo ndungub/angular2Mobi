@@ -7,6 +7,7 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { LoanapplicationPage } from '../pages/loanapplication/loanapplication';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
+import { LoansPage } from '../pages/loans/loans';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
@@ -30,7 +31,7 @@ export class MyApp {
   private alertCtrl: AlertController;
   loading: any;
 
-  constructor(platform: Platform, menu: MenuController, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, menu: MenuController, alertCtrl: AlertController, loadingCtrl: LoadingController, authService: AuthServiceProvider, statusBar: StatusBar, splashScreen: SplashScreen) {
    
 	  platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -38,11 +39,15 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       this.menu = menu;
+      this.alertCtrl = alertCtrl;
+      this.loadingCtrl = loadingCtrl;
+      this.authService = authService;
+      
       this.navigatePages = [
         			{ title: 'Home', component: HomePage, icon: 'home', name: 'homepage' },
         			{ title: 'Evaluation', component: HomePage, icon: 'pie', name: 'evaluationpage' },
         			{ title: 'Apply Now', component: LoanapplicationPage, icon: 'medal', name: 'loanapplicationpage' },
-        			{ title: 'Loans', component: HomePage, icon: 'medal', name: 'loanpage' },
+        			{ title: 'Loans', component: LoansPage, icon: 'medal', name: 'loanspage' },
         			{ title: 'Payments', component: HomePage, icon: 'cash', name: 'paymentspage' }
        ];
       this.otherPages = [
@@ -58,15 +63,13 @@ export class MyApp {
   }
   
   openPage(page) {
-	  if(page.component.name == 'evaluationpage'){
+	  if(page.name == 'evaluationpage'){
 		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.component.name == 'loanpage'){
+	  }else if(page.name == 'paymentspage'){
 		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.component.name == 'paymentspage'){
+	  }else if(page.name == 'supportpage'){
 		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.component.name == 'supportpage'){
-		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.component.name == 'aboutuspage'){
+	  }else if(page.name == 'aboutuspage'){
 		  this.showAlert('Coming soon......','Vuqa');
 	  }else{
 		  this.nav.setRoot(page.component);
