@@ -14,7 +14,8 @@ import 'rxjs/add/operator/catch';
   for more info on providers and Angular DI.
 */
 
-let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
+//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
+let apiUrl = 'https://demoapp.imab.co.ke/imabservice/vuqa/api/v1/';
 
 @Injectable()
 export class LoanServiceProvider {
