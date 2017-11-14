@@ -8,12 +8,16 @@ import { HomePage } from '../pages/home/home';
 import { LoanapplicationPage } from '../pages/loanapplication/loanapplication';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
 import { LoansPage } from '../pages/loans/loans';
+import { EvaluationPage } from '../pages/evaluation/evaluation';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { ShareServiceProvider } from '../providers/share-service/share-service';
 
 import {Observable} from 'rxjs/Rx';
 import { RequestModel } from '../model/requestModel';
 
+//Events
+import { Events } from 'ionic-angular';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,11 +31,15 @@ export class MyApp {
   rootPage:any = LoginPage;
   private menu: MenuController;
   private authService: AuthServiceProvider;
+  private shareService: ShareServiceProvider;
   private loadingCtrl: LoadingController;
   private alertCtrl: AlertController;
   loading: any;
+  
+  menuFullNames: string;
+  menuMedal: string;
 
-  constructor(platform: Platform, menu: MenuController, alertCtrl: AlertController, loadingCtrl: LoadingController, authService: AuthServiceProvider, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, menu: MenuController, alertCtrl: AlertController, loadingCtrl: LoadingController, authService: AuthServiceProvider, shareService: ShareServiceProvider, statusBar: StatusBar, splashScreen: SplashScreen, public events: Events) {
    
 	  platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -43,9 +51,12 @@ export class MyApp {
       this.loadingCtrl = loadingCtrl;
       this.authService = authService;
       
+      
+      
+      
       this.navigatePages = [
         			{ title: 'Home', component: HomePage, icon: 'home', name: 'homepage' },
-        			{ title: 'Evaluation', component: HomePage, icon: 'pie', name: 'evaluationpage' },
+        			{ title: 'Evaluation', component: EvaluationPage, icon: 'pie', name: 'evaluationpage' },
         			{ title: 'Apply Now', component: LoanapplicationPage, icon: 'medal', name: 'loanapplicationpage' },
         			{ title: 'Loans', component: LoansPage, icon: 'medal', name: 'loanspage' },
         			{ title: 'Payments', component: HomePage, icon: 'cash', name: 'paymentspage' }
@@ -55,17 +66,20 @@ export class MyApp {
                 			{ title: 'About Us', component: HomePage, icon: 'information-circle', name: 'aboutuspage' }
                ];
       this.accountPages = [
-             			{ title: 'Change PIN', component: ChangePinPage, icon: 'log-out', name: 'changepinpage' },
+             			{ title: 'Change PIN', component: ChangePinPage, icon: 'key', name: 'changepinpage' },
              			{ title: 'Sign Out', component: HomePage, icon: 'log-out', name: 'signoutpage' }
             ];
-
+      
     });
+	  
+      events.subscribe('sharedServices', (data) => {
+    	  this.menuFullNames = data.fullNames;
+    	  this.menuMedal = data.medal;  
+      });
   }
   
   openPage(page) {
-	  if(page.name == 'evaluationpage'){
-		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.name == 'paymentspage'){
+	  if(page.name == 'paymentspage'){
 		  this.showAlert('Coming soon......','Vuqa');
 	  }else if(page.name == 'supportpage'){
 		  this.showAlert('Coming soon......','Vuqa');

@@ -6,9 +6,7 @@ page-loanapplication {
 		.loanapplication-circular {
  			width: 200px;
 			height: 200px;
-			border: 10px solid #da1921;
-			background-color: #da1921;
- 			background-image: url('assets/images/blank.png');
+ 			background-image: url('../assets/images/loanapplication.png');
  			background-size: cover;
  			display: block;
  			border-radius: 100px;
@@ -16,13 +14,26 @@ page-loanapplication {
  			-moz-border-radius: 100px;
  			margin-left: 15%;
 		}
+		.levelonetext{
+			font-size: 3rem;
+			text-align: center;
+		}
+		.levetwotext{
+			font-size: 2rem;
+			text-align: center;
+		}
+		.levethreetext{
+			font-size: 1rem;
+			text-align: center
+		}
+		/*
 		.centered {
 			position: absolute;
 			text-align: center;
 			top: 60%;
 			left: 45%;
 			transform: translate(-50%, -50%);
-			margin-left: 25px;
-			margin-top: 15px; 
-		}
+			//margin-left: 25px;
+			//margin-top: 15px; 
+		}*/
 }

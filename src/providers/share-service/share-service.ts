@@ -18,6 +18,13 @@ export class ShareServiceProvider {
 	idtypedesc: string;
 	medal: string;
 	eligibleamount: number;
+
+	loanid: number;
+	loanamount: number;
+	loanstatus: string;
+	disbursedon: string;
+	loanbalance: number;
+	nextinstallmentdate: string;
  
     constructor() {
         this.loginSessionMobileNo = '';
@@ -90,5 +97,54 @@ export class ShareServiceProvider {
     getEligibleAmount() {
         return this.eligibleamount;
     }  
-    
+
+ 
+    //Loan ID
+    setLoanid(loanid) {
+        this.loanid = loanid;       
+    }
+  
+    getLoanid() {
+        return this.loanid;
+    }  
+    //loan Balance Amount
+    setLoanamount(loanamount) {
+        this.loanamount = loanamount;       
+    }
+  
+    getLoanamount() {
+        return this.loanamount;
+    }  
+    //Loan Balance Status
+    setLoanstatus(loanstatus) {
+        this.loanstatus = loanstatus;       
+    }
+  
+    getLoanstatus() {
+        return this.loanstatus;
+    }  
+    //loan balance disbursed on
+    setDisbursedon(disbursedon) {
+        this.disbursedon = disbursedon;       
+    }
+  
+    getDisbursedon() {
+        return this.disbursedon;
+    }  
+    //Loan balance
+    setLoanbalance(loanbalance) {
+        this.loanbalance = loanbalance;       
+    }
+  
+    getLoanbalance() {
+        return this.loanbalance;
+    }  
+    //Next installment
+    setNextInstallmentDate(nextinstallmentdate) {
+        this.nextinstallmentdate = nextinstallmentdate;       
+    }
+  
+    getNextInstallmentDate() {
+        return this.nextinstallmentdate;
+    }  
 }

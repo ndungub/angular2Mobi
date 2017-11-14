@@ -7,21 +7,20 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Loan Application</ion-title>
+    <ion-title>Loan(s) Summary</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-	<ion-list >
+	<ion-list [hidden]="hasBalance">
 		<ion-row align-items-stretch>
 			<ion-col col-12  col-12 col-md-6 align-self-stretch align-self-center  >
 		            <ion-card-content class="outer-content">
 		             
-							<div class="loanbalance-title"><h1><strong>Loan balance</strong></h1></div>
-							<div class="loanbalance-circular"></div>
-							<div class="centered"><h1><strong>KES <br> 5,000</strong></h1></div>
+							<div class="loanbalance-title levetwotext"><strong>You have a running loan</strong></div>
+							<div class="levelonetext"><strong>{{loanBalance}}</strong></div>
 		             
 		            </ion-card-content>
 			</ion-col>

@@ -14,8 +14,8 @@ import 'rxjs/add/operator/catch';
   for more info on providers and Angular DI.
 */
 
-//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
-let apiUrl = 'https://demoapp.imab.co.ke/imabservice/vuqa/api/v1/';
+let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
+//let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
 
 @Injectable()
 export class LoanServiceProvider {
@@ -23,6 +23,20 @@ export class LoanServiceProvider {
   constructor(public http: Http) {
     console.log('Hello LoanServiceProvider Provider');
   }
+
+  getLoanBalances (body: Object): Observable<LoanApplicationModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloancustomerloans', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
   
   getLoanProducts (): Observable<LoanApplicationModel> {
       
@@ -65,4 +79,6 @@ export class LoanServiceProvider {
                        				error.json().error || 'Server error'
                        		));
   };
+  
+
 }

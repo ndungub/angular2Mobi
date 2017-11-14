@@ -16,14 +16,24 @@ page-loans {
  		margin-left: 15%;
  	
 	}
+	.levelonetext{
+			font-size: 3rem;
+			text-align: center;
+		}
+	.levetwotext{
+		font-size: 2rem;
+		text-align: center;
+	}
+	.levethreetext{
+		font-size: 1rem;
+		text-align: center
+	}
 	.centered {
 		position: absolute;
 		text-align: center;
 		top: 60%;
 		left: 45%;
 		transform: translate(-50%, -50%);
-		margin-left: 25px;
-		margin-top: 15px; 
 	}
 
 }

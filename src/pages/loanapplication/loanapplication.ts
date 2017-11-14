@@ -29,7 +29,7 @@ export class LoanapplicationPage {
 	loanperiods: Periods[] = [];
 	loanapplicationData = { loanamount:'', loanperiod:'' };
 	
-	qualifiedAmout:number;
+	qualifiedAmout:any;
 
 
 	    
@@ -49,7 +49,7 @@ export class LoanapplicationPage {
 	                	this.loading.dismiss();
 	                	if(response.retcode == "000"){
 	                		this.loadLoanAmount(this.shareService.getEligibleAmount(),response.results.maxloanterm);
-	                		this.qualifiedAmout = this.shareService.getEligibleAmount();
+	                		this.qualifiedAmout = 'KES ' + this.toNum(this.shareService.getEligibleAmount());
 	                	}else{
 	                		
 	                		this.showAlert(response.retmsg,"Vuqa");
@@ -217,6 +217,11 @@ export class LoanapplicationPage {
 		  });
 		  alert.present();
  };
+ 
+ toNum (num): number{
+	  num  = Math.round(num);
+	  return num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+ }
 
 }
 export interface Periods {

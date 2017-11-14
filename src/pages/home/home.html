@@ -61,10 +61,10 @@
               <ion-list>
               	<ion-item text-wrap>
               		<ion-avatar item-start>
-	                  <img src="assets/images/bronze.png" alt="">
-	                  	Bronze
+	                  <img [src]="medalPath" alt="">
+	                  	{{currentMedal}}
 	                </ion-avatar>
-                  <h3>Congratulations! You qualify for KES 2,000</h3>
+                  <h3>Congratulations! You qualify for {{qualifiedAmout}}</h3>
                 </ion-item>
               </ion-list>
             </ion-card-content>

@@ -32,6 +32,7 @@ export class RegisterPage {
 	public lastSlider = false;
 	public registerOTPSent = false;
 	public photoImage: string;
+	public photoDataURI: string;
 
 	
 	loading: any;
@@ -62,7 +63,7 @@ export class RegisterPage {
 
 
   SendSignUpOTP() {
-	    this.showLoader();
+	    this.showLoader('Sending OTP.....');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -90,7 +91,7 @@ export class RegisterPage {
   };
 
   ValidateSignUpOTP()  {
-	  this.showLoader();
+	  this.showLoader('Validating OTP......');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -128,7 +129,7 @@ export class RegisterPage {
   };
   
   SubmitSignUpBIO()  {
-	  this.showLoader();
+	  this.showLoader('Submitting.....');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -140,10 +141,8 @@ export class RegisterPage {
 	                	this.loading.dismiss();
 	                	
 	                	if(response.retcode == "000"){
-	                		this.slides.lockSwipes(false);
-	                	    this.slides.slideNext();
-	                	    this.slides.lockSwipes(true);
-	                	    this.showAlert(response.retmsg,"Vuqa");
+	                	    this.MakeFileUpload(this.photoDataURI);
+	                	    
 	                	}else{
 	                		
 	                		this.showAlert(response.retmsg,"Vuqa");
@@ -158,37 +157,61 @@ export class RegisterPage {
 	    });
   };
   
-  MakeFileUpload(imageData)  {
+ 
 
-	 
-	  /*'use strict';
-
-	  const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-		  const byteCharacters = atob(b64Data);
-		  const byteArrays = [];
-		  
-		  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-		    const slice = byteCharacters.slice(offset, offset + sliceSize);
-		    
-		    const byteNumbers = new Array(slice.length);
-		    for (let i = 0; i < slice.length; i++) {
-		      byteNumbers[i] = slice.charCodeAt(i);
-		    }
-		    
-		    const byteArray = new Uint8Array(byteNumbers);
-		    
-		    byteArrays.push(byteArray);
-		  }
-		  
-		  const blob = new Blob(byteArrays, {type: contentType});
-		  return blob;
-		};
-		
-		const contentType = 'image/png';
-		const blob = b64toBlob(imageData, contentType);
-		*/
-	 
-
+ MakeFileUpload(imageData)  { 
+	  'use strict';
+	  this.showLoader('Uploading photo.....');
+	  
+	  this.loading.present().then(() => {
+		  const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+			  const byteCharacters = atob(b64Data);
+			  const byteArrays = [];
+			  
+			  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+			    const slice = byteCharacters.slice(offset, offset + sliceSize);
+			    
+			    const byteNumbers = new Array(slice.length);
+			    for (let i = 0; i < slice.length; i++) {
+			      byteNumbers[i] = slice.charCodeAt(i);
+			    }
+			    
+			    const byteArray = new Uint8Array(byteNumbers);
+			    
+			    byteArrays.push(byteArray);
+			  }
+			  
+			  const blob = new Blob(byteArrays, {type: contentType});
+			  return blob;
+			};
+			
+			const contentType = 'image/png';
+			const blob = b64toBlob(imageData, contentType);
+			
+			let _self = this;
+			let registerOperation:Observable<RequestModel>;
+	    	registerOperation = _self.authService.makeFileUpload(blob,'72','mobilephotoimage');
+	    	registerOperation.subscribe(
+	    			response => {
+	    				this.loading.dismiss();
+	    				_self.slides.lockSwipes(false);
+	    				_self.slides.slideNext();
+	    				_self.slides.lockSwipes(true);
+	            	    
+	    				_self.showAlert(response.retmsg,"Vuqa");
+	                }, 
+	                err => {
+	                	this.loading.dismiss();
+	                	_self.slides.lockSwipes(false);
+	    				_self.slides.slideNext();
+	    				_self.slides.lockSwipes(true);
+	    				
+	                	_self.showAlert(err,"Vuqa");
+	       });
+	  });
+  }; 
+ 
+/* MakeFileUpload(imageData)  {
 	  let _self = this;
 	  this.file.resolveLocalFilesystemUrl(imageData).then((fileEntry: any) => {
 		  fileEntry.file(function(file) {
@@ -220,25 +243,33 @@ export class RegisterPage {
 
 		
 
-  }; 
+  };*/ 
   
   takePhoto(){
-	  this.options = {
-		        quality: 100,
-		        sourceType: this.camera.PictureSourceType.CAMERA,
-		        saveToPhotoAlbum: true,
-		        correctOrientation: true,
-		        destinationType: this.camera.DestinationType.DATA_URL,
-		        mediaType: this.camera.MediaType.PICTURE
-		      }
-			  this.camera.getPicture(this.options).then((imageData) => {
-				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-			    }, (err) => {
-			    	this.showAlert(err,"Vuqa");
-		      }); 
+	  this.showLoader('Loading.....');
+	  this.loading.present().then(() => {
+		  this.options = {
+			        quality: 100,
+			        sourceType: this.camera.PictureSourceType.CAMERA,
+			        saveToPhotoAlbum: true,
+			        correctOrientation: true,
+			        destinationType: this.camera.DestinationType.DATA_URL,
+			        mediaType: this.camera.MediaType.PICTURE
+			      }
+				  this.camera.getPicture(this.options).then((imageData) => {
+					  this.loading.dismiss();
+					  this.photoImage = 'data:image/jpeg;base64,' + imageData;
+					  this.photoDataURI = imageData;
+				    }, (err) => {
+				    	this.loading.dismiss();
+				    	this.showAlert(err,"Vuqa");
+			      });
+	  });
   };
   
   browsePhoto(){
+	  this.showLoader('Loading.....');
+	  this.loading.present().then(() => {
 	  this.options = {
 		        quality: 100,
 		        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -248,12 +279,14 @@ export class RegisterPage {
 		        mediaType: this.camera.MediaType.PICTURE
 		      }
 			  this.camera.getPicture(this.options).then((imageData) => {
+				  this.loading.dismiss();
 				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-				  //this.MakeFileUpload(imageData);
-				  console.log('rrr')
+				  this.photoDataURI = imageData;
 			    }, (err) => {
+			    	this.loading.dismiss();
 			    	this.showAlert(err,"Vuqa");
-		      }); 	  
+		      });
+	  });
   };
 
   public registerBack() {
@@ -261,9 +294,9 @@ export class RegisterPage {
 		//this.navCtrl.push(tile.component);
 	};
 
-  showLoader(){
+  showLoader(msg){
 	    this.loading = this.loadingCtrl.create({
-	        content: 'Authenticating...'
+	        content: msg
 	    });
 
 	    this.loading.present();
@@ -294,7 +327,7 @@ export class RegisterPage {
 	    	return this.ValidateSignUpBIO();
 	    }else if(currentIndex == 2){
 	    	return this.SubmitSignUpBIO();
-	    	//this.MakeFileUpload();
+	    	
 	    }else if(currentIndex == 3){
 	    	this.nav.setRoot(LoginPage);
 	    }

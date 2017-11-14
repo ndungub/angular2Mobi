@@ -20,16 +20,21 @@
 		<ion-list >
 			<ion-row align-items-stretch>
 				<ion-col col-12  col-12 col-md-6 align-self-stretch align-self-center  >
-					<div class="loanapplication-title"><h1><strong>Congratulation!!!</strong></h1></div>
-					<div class="loanapplication-title"><h2><strong>You can borrow</strong></h2></div>
+					
 					<div class="loanapplication-circular"></div>
-					<div class="centered"><h1><strong>KES {{qualifiedAmout}}</strong></h1></div>
+					<div class="loanapplication-title levetwotext"><strong>You qualify for up to</strong></div>
+					<div class="levelonetext"><strong>{{qualifiedAmout}}</strong></div>
+					<div class="levethreetext">
+							<strong>
+								<p>When you keep your account in good standing and repay loans, you can grow your limit up to KES 50,000</p>
+							</strong>
+					</div>
 				</ion-col>
 			</ion-row>
 			<ion-row>
 				<ion-col col-12>
 					<ion-item>
-						<ion-label stacked>Loan Amount</ion-label>
+						<ion-label stacked>Choose Loam Amount</ion-label>
 						<ion-select [(ngModel)]="selectedLoanAmount" name="loanamount" (ngModelChange)="optionsLoanAmount(item)">
 							<ion-option *ngFor="let item of loanamounts"  [value]="item" >{{item.loanamount}}</ion-option>
 							
@@ -41,7 +46,7 @@
 			<ion-row>
 				<ion-col col-12>
 					<ion-item>
-						<ion-label stacked>Repayment Period</ion-label>
+						<ion-label stacked>Choose Period</ion-label>
 						<ion-select [(ngModel)]="selectedLoanPeriod" name="loanperiod" >
 							<ion-option *ngFor="let item of loanperiods" [value]="item" >{{item.periodNum}}</ion-option>
 						</ion-select>

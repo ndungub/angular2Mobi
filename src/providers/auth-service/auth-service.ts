@@ -15,8 +15,9 @@ import CryptoJS from 'crypto-js';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular DI.
 */
-//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
-let apiUrl = 'https://demoapp.imab.co.ke/imabservice/vuqa/api/v1/';
+let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
+
+//let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
 
 @Injectable()
 export class AuthServiceProvider {
@@ -25,9 +26,12 @@ export class AuthServiceProvider {
 	private progressObserver: any;
 
   constructor(public http: Http) {
-	  this.progress$ = new Observable(observer => {
+	  /*this.progress$ = new Observable(observer => {
 	        this.progressObserver = observer
-	  });
+	  });*/
+	  this.progress$ = Observable.create(observer => {
+	        this.progressObserver = observer
+	    }).share();
   }
   
 
@@ -181,7 +185,9 @@ export class AuthServiceProvider {
 	            xhr.upload.onprogress = (event) => {
 	                this.progress = Math.round(event.loaded / event.total * 100);
 
-	                this.progressObserver.next(this.progress);
+	                //this.progressObserver.next(this.progress);
+	                
+	               
 	            };
 
 	            xhr.open('POST', url, true);

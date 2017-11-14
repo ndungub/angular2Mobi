@@ -17,11 +17,11 @@
 		    <ion-thumbnail item-start>
 		      <img src="assets/images/silver.png">
 		    </ion-thumbnail>
-		    <h2>Current Status</h2>
-		    <p>{{statusrating}}</p>
+		    <h2>Current Evaluation</h2>
+		    <p>{{statusRating}}</p>
 	    </ion-item>
 	  
-	    <ion-segment  [(ngModel)]="evaluation_tab">
+	    <ion-segment  [(ngModel)]="evaluationTab">
 	        <ion-segment-button class="evalsegment" value="segmentbronze" tappable>
 	            Bronze
 	        </ion-segment-button>
@@ -33,14 +33,14 @@
 	        </ion-segment-button>
 	    </ion-segment>
 	    
-	    <div [ngSwitch]="evaluation_tab" class="paperbg content_margin">
+	    <div [ngSwitch]="evaluationTab" class="paperbg content_margin">
 	
 	      <!-- Bronze -->
 	      <div *ngSwitchCase="'segmentbronze'"> 
 		    <ion-card >
 			      <ion-item>
 				    <h2>Bronze</h2>
-				    <p>KES 1,000 - KES 10,000</p>
+				    <p>KES 1,000 - KES 9,000</p>
 				  </ion-item>
 				  <img class="ratingmedal" src="assets/images/bronze.png" >
 				  
@@ -66,7 +66,7 @@
 		    <ion-card >
 			      <ion-item>
 				    <h2>Silver</h2>
-				    <p>KES 10,001 - KES 50,000</p>
+				    <p>KES 10,000 - KES 49,999</p>
 				  </ion-item>
 				  <img class="ratingmedal" src="assets/images/silver.png" >
 				  
@@ -92,7 +92,7 @@
 			      <ion-item>
 
 				    <h2>Gold</h2>
-				    <p>KES 50,001 - Above</p>
+				    <p>KES 50,000 - Above</p>
 				  </ion-item>
 				  <img class="ratingmedal" src="assets/images/gold.png" >
 				  
@@ -116,3 +116,13 @@
 	    
 </div>    
 </ion-content>
+<ion-footer primary>
+   <ion-toolbar color="primary">
+	    <ion-buttons left>
+		      <button ion-button icon-Left (tap)="evaluationBack()">
+		      	<ion-icon name="arrow-back"></ion-icon>
+		        	Back
+		      </button>
+    	</ion-buttons>
+  </ion-toolbar>
+</ion-footer>
