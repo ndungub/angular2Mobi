@@ -85,10 +85,6 @@ export class LoanapplicationPage {
 		                			+ " payable to "
 		                			+ this.shareService.getFullNames()
 		                			+ ". "
-		                			+ "Ksh " 
-		                			+ response.results.interestamount 
-		                			+" service fee will be deducted. "
-		                			+ "Ksh " 
 		                			+ response.results.takehome 
 		                			+ " will be sent to your MPESA."
 		                			+"You loan due date is " 
@@ -127,6 +123,7 @@ export class LoanapplicationPage {
 	                	this.loading.dismiss();
 	                	if(response.retcode == "000"){
 	                		this.showAlert(response.retmsg,"Vuqa");
+	                		this.nav.setRoot(HomePage);
 	                	}else{
 	                		
 	                		this.showAlert(response.retmsg,"Vuqa");

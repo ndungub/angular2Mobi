@@ -23,7 +23,7 @@
 
 <ion-content padding>
   
-  <form class="register-form">
+  <form class="registerForm">
   
 	<ion-slides (ionSlideDidChange)="slideChanged()" >
 		<ion-slide>
@@ -38,21 +38,28 @@
 		    <ion-item>
 		      <ion-label stacked>Mobile No</ion-label>
 		      <ion-badge item-left>+254</ion-badge>
-		      <ion-input [(ngModel)]="regData.mobileno" name="mobileno" type="number" placeholder="Mobile No" ></ion-input>
+		      <ion-input [(ngModel)]="regData.mobileno" name="mobileno" type="number" placeholder="Mobile No" required></ion-input>
 		    </ion-item>
+	       
+	       <ion-item class="termscheckbox" >
+	           <ion-checkbox secondary #terms name="terms" value="" [(ngModel)]="termsandconidtion" (ionChange)="isChecked()"></ion-checkbox>
+	           <ion-label>I accept the <a href="#">Terms & Conditions</a></ion-label>
+	       </ion-item>
 		    
-		    <ion-item>
-		    	<ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp; &nbsp;</ion-badge>
-			    <button ion-button block (tap)="SendSignUpOTP()" >
+		    <ion-item >
+			    <button ion-button block (tap)="SendSignUpOTP()" [disabled]="!termsandconidtion" >
 			      Validate
 			    </button>
 		    </ion-item>
 		    
 		    <ion-item [hidden]="!registerOTPSent">
-		      <ion-label stacked>Validation OTP</ion-label>
-		      <ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp;</ion-badge>
+		      <ion-label stacked>Enter OTP</ion-label>
+		      
 		      <ion-input [(ngModel)]="regData.otpcode" name="otpcode" type="number" placeholder="OTP Code" ></ion-input>
 		    </ion-item>
+		    
+
+	       
 		    
 		</ion-slide>
 		<ion-slide>
@@ -119,20 +126,6 @@
 
 		</ion-slide>
 	</ion-slides>
-	
-    <!-- <ion-item>
-      <ion-label stacked>Username</ion-label>
-      <ion-input [(ngModel)]="regData.username" name="username" type="text" placeholder="Your username" ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Password</ion-label>
-      <ion-input [(ngModel)]="regData.password" name="password" type="password" placeholder="Your password"></ion-input>
-    </ion-item>
-    
-    <button ion-button block type="submit">
-      SignUp
-    </button>
-     -->
     
   </form>
   

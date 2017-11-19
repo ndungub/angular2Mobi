@@ -1,0 +1,61 @@
+<!--
+  Generated template for the PaymentsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Payments</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<form class="payment-form" #paymentForm="ngForm" >
+		<ion-list >
+			<ion-row align-items-stretch>
+				<ion-col col-12  col-12 col-md-6 align-self-stretch align-self-center  >
+					
+					<div class="payment-circular"></div>
+					<div class="payment-title levetwotext"><strong>Your loan balance is:</strong></div>
+					<div class="levelonetext"><strong>{{loanBalance}}</strong></div>
+					<div class="levethreetext">
+							<strong>
+								<p>Paying on time increases your chnages of qualifying for more</p>
+							</strong>
+					</div>
+				</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col col-12>
+					<ion-item>
+						<ion-label stacked>Enter Amount</ion-label>
+						<ion-input [(ngModel)]="paymentData.paymentamount" name="paymentamount" type="number" placeholder="Amount" #paymentamount="ngModel" required></ion-input>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+			
+			<ion-row responsive-sm>
+				<ion-col >
+					 <button  ion-button block (click)="doPayments(paymentForm)" type="submit" block>
+				      	Submit Payment
+				     </button> 
+				</ion-col>
+			</ion-row>	
+		</ion-list>
+	</form>
+</ion-content>
+<ion-footer primary>
+   <ion-toolbar color="primary">
+	    <ion-buttons left>
+		      <button ion-button icon-Left (tap)="paymentsBack()">
+		      	<ion-icon name="arrow-back"></ion-icon>
+		        	Back
+		      </button>
+    	</ion-buttons>
+  </ion-toolbar>
+</ion-footer>

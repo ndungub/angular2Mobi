@@ -8,7 +8,9 @@ import { HomePage } from '../pages/home/home';
 import { LoanapplicationPage } from '../pages/loanapplication/loanapplication';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
 import { LoansPage } from '../pages/loans/loans';
+import { PaymentsPage } from '../pages/payments/payments';
 import { EvaluationPage } from '../pages/evaluation/evaluation';
+import { PhotouploadPage } from '../pages/photoupload/photoupload';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { ShareServiceProvider } from '../providers/share-service/share-service';
@@ -59,7 +61,7 @@ export class MyApp {
         			{ title: 'Evaluation', component: EvaluationPage, icon: 'pie', name: 'evaluationpage' },
         			{ title: 'Apply Now', component: LoanapplicationPage, icon: 'medal', name: 'loanapplicationpage' },
         			{ title: 'Loans', component: LoansPage, icon: 'medal', name: 'loanspage' },
-        			{ title: 'Payments', component: HomePage, icon: 'cash', name: 'paymentspage' }
+        			{ title: 'Payments', component: PaymentsPage, icon: 'cash', name: 'paymentspage' }
        ];
       this.otherPages = [
                 			{ title: 'Support', component: HomePage, icon: 'settings', name: 'supportpage' },
@@ -79,18 +81,25 @@ export class MyApp {
   }
   
   openPage(page) {
-	  if(page.name == 'paymentspage'){
-		  this.showAlert('Coming soon......','Vuqa');
-	  }else if(page.name == 'supportpage'){
+	  if(page.name == 'supportpage'){
 		  this.showAlert('Coming soon......','Vuqa');
 	  }else if(page.name == 'aboutuspage'){
 		  this.showAlert('Coming soon......','Vuqa');
+	  }else if(page.name == 'signoutpage'){
+		  this.nav.setRoot(LoginPage);
 	  }else{
 		  this.nav.setRoot(page.component);
 	  }
 	   
 	  this.menu.close();
   };
+
+  UploadPhoto() {
+	  this.nav.setRoot(PhotouploadPage); 
+	  this.menu.close();
+  };
+  
+
   
   logout() {
 	    this.showLoader();

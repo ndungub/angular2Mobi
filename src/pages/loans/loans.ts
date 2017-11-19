@@ -3,6 +3,7 @@ import { App, NavController, NavParams,Nav,AlertController ,LoadingController, T
 
 import { HomePage } from '../home/home';
 import { LoanapplicationPage } from '../loanapplication/loanapplication';
+import { LoandetailsPage } from '../loandetails/loandetails';
 
 //Services
 import { ShareServiceProvider } from '../../providers/share-service/share-service';
@@ -10,6 +11,8 @@ import { LoanServiceProvider } from '../../providers/loan-service/loan-service';
 
 import {Observable} from 'rxjs/Rx';
 import { LoanApplicationModel } from '../../model/loanApplicationModel';
+import { LoansModel } from '../../model/loansModel';
+
 /**
  * Generated class for the LoansPage page.
  *
@@ -23,16 +26,26 @@ import { LoanApplicationModel } from '../../model/loanApplicationModel';
 })
 export class LoansPage {
 	loading: any;
-	loanBalance: any;
 	loanBalanceData = { mobileno:'' };
-	hasBalance: boolean = false;
-	constructor(public app: App, public navCtrl: NavController, public nav: Nav, public navParams: NavParams, public loanService: LoanServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController,private alertCtrl: AlertController, private toastCtrl: ToastController) {
+	loans: any;
 	
+	activeLoan: any;
+	
+	loanBalance: number;
+	loanPrincipal: number;
+	loanInterest: number;
+	loanTotal: number;
+	monthlyRate: number;
+	hasBalance: boolean = false;
+	
+	
+	constructor(public app: App, public navCtrl: NavController, public nav: Nav, public navParams: NavParams, public loanService: LoanServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController,private alertCtrl: AlertController, private toastCtrl: ToastController) {
+		this.getLoanBalances();
 	};
 
  private getLoanBalances(): void {
 	    this.showLoader('Checking loan balances ...');
-	    let registerOperation:Observable<LoanApplicationModel>;
+	    let registerOperation:Observable<LoansModel>;
 
 	    this.loading.present().then(() => {
 	    	
@@ -44,13 +57,35 @@ export class LoansPage {
 	    			response => {
 	                	this.loading.dismiss();
 	                	if(response.retcode == "000"){
-	                		/*this.shareService.setLoanid(response.results.loanid);
-	                		this.shareService.setLoanamount(response.results.loanamount);
-	                		this.shareService.setLoanstatus(response.results.loanstatus);
-	                		this.shareService.setDisbursedon(response.results.disbursedon);
-	                		this.shareService.setLoanbalance(response.results.loanbalance);
-	                		this.shareService.setNextInstallmentDate(response.results.nextinstallmentdate);
-	                		*/
+	                		this.loans = response.results;
+	                		this.loans = this.loans.sort((a,b) => b.loanid - a.loanid);
+	                		this.activeLoan = this.loans.find(x => x.loanstatus == 3);
+	                		
+	                		if(this.activeLoan != null){
+	                			this.hasBalance = true;
+	                		}else{
+	                			this.hasBalance = false;
+	                		}
+	                		
+	                		
+	                		this.loanBalance = this.toNum(this.activeLoan.loanbalance);
+	                		this.loanPrincipal = this.toNum(this.activeLoan.loanamount);
+	                		this.loanInterest = this.toNum(this.activeLoan.loaninterest);
+	                		this.loanTotal = this.toNum(this.activeLoan.totalamount);
+	                		this.monthlyRate = parseFloat(this.activeLoan.loanrate);
+	                		
+	                		this.shareService.setLoanid(this.activeLoan.loanid);
+	                		this.shareService.setLoanamount(this.activeLoan.loanamount);
+	                		this.shareService.setLoanstatus(this.activeLoan.loanstatus);
+	                		this.shareService.setDisbursedon(this.activeLoan.disbursedon);
+	                		this.shareService.setLoanbalance(this.activeLoan.loanbalance);
+	                		this.shareService.setNextInstallmentDate(this.activeLoan.nextinstallmentdate);
+	                		this.shareService.setIsactive(this.activeLoan.isactive);
+	                		this.shareService.setLoanTerm(this.activeLoan.loanterm);
+	                		this.shareService.setLoanRate(this.activeLoan.loanrate);
+	                		this.shareService.setTotalAmount(this.activeLoan.totalamount);
+	                		this.shareService.setLoanInterest(this.activeLoan.loaninterest);
+	                		
 	                	}else{
 	                		
 	                		this.nav.setRoot(LoanapplicationPage);
@@ -63,6 +98,12 @@ export class LoansPage {
 	        });
 	    });
 	};
+	
+
+  public getLoanDetails(loan): void{
+	  this.shareService.setDetailLoanId(loan.loanid)
+	  this.nav.setRoot(LoandetailsPage);
+  }
   public loansBack() {
 		this.nav.setRoot(HomePage);
   };

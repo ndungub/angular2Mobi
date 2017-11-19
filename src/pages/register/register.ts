@@ -1,15 +1,14 @@
 import { Injectable, Component,ViewChild } from '@angular/core';
-import { NavController, Nav, Slides, LoadingController, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
+import { NavController, Nav, Slides, LoadingController, AlertController, ToastController,ModalController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 import {Observable} from 'rxjs/Rx';
 import { RequestModel } from '../../model/requestModel';
+import { Events } from 'ionic-angular';
 
-import { Camera } from '@ionic-native/camera';
-//import {Transfer, TransferObject} from '@ionic-native/transfer';
-import {File} from '@ionic-native/file';
+//import { Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 
 
 /**
@@ -22,11 +21,11 @@ import {File} from '@ionic-native/file';
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
-  providers: [[Camera]]
 })
 @Injectable()
 export class RegisterPage {
 	
+
 	@ViewChild(Slides) slides: Slides;
 	public firstSlider = true;
 	public lastSlider = false;
@@ -39,7 +38,8 @@ export class RegisterPage {
 	regData = {mobileno: ''};
 	today;
 	dob;
-	options:any;
+	termsandconidtion: boolean = false;
+	
 
 	//response =  new RequestModel();
 	
@@ -51,7 +51,7 @@ export class RegisterPage {
 	  
 	  
 	
-    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController,private camera: Camera,private actionSheetCtrl: ActionSheetController, private file: File) {
+    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, public events: Events) {
     	this.today = new Date().toISOString();
     	this.dob = new Date().toISOString();
     	
@@ -141,12 +141,12 @@ export class RegisterPage {
 	                	this.loading.dismiss();
 	                	
 	                	if(response.retcode == "000"){
-	                	    this.MakeFileUpload(this.photoDataURI);
+	                		this.slides.lockSwipes(false);
+	                	    this.slides.slideNext();
+	                	    this.slides.lockSwipes(true);
 	                	    
-	                	}else{
-	                		
-	                		this.showAlert(response.retmsg,"Vuqa");
 	                	}
+	                	this.showAlert(response.retmsg,"Vuqa");
 
 	                }, 
 	                err => {
@@ -157,59 +157,9 @@ export class RegisterPage {
 	    });
   };
   
- 
-
- MakeFileUpload(imageData)  { 
-	  'use strict';
-	  this.showLoader('Uploading photo.....');
-	  
-	  this.loading.present().then(() => {
-		  const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-			  const byteCharacters = atob(b64Data);
-			  const byteArrays = [];
-			  
-			  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-			    const slice = byteCharacters.slice(offset, offset + sliceSize);
-			    
-			    const byteNumbers = new Array(slice.length);
-			    for (let i = 0; i < slice.length; i++) {
-			      byteNumbers[i] = slice.charCodeAt(i);
-			    }
-			    
-			    const byteArray = new Uint8Array(byteNumbers);
-			    
-			    byteArrays.push(byteArray);
-			  }
-			  
-			  const blob = new Blob(byteArrays, {type: contentType});
-			  return blob;
-			};
-			
-			const contentType = 'image/png';
-			const blob = b64toBlob(imageData, contentType);
-			
-			let _self = this;
-			let registerOperation:Observable<RequestModel>;
-	    	registerOperation = _self.authService.makeFileUpload(blob,'72','mobilephotoimage');
-	    	registerOperation.subscribe(
-	    			response => {
-	    				this.loading.dismiss();
-	    				_self.slides.lockSwipes(false);
-	    				_self.slides.slideNext();
-	    				_self.slides.lockSwipes(true);
-	            	    
-	    				_self.showAlert(response.retmsg,"Vuqa");
-	                }, 
-	                err => {
-	                	this.loading.dismiss();
-	                	_self.slides.lockSwipes(false);
-	    				_self.slides.slideNext();
-	    				_self.slides.lockSwipes(true);
-	    				
-	                	_self.showAlert(err,"Vuqa");
-	       });
-	  });
-  }; 
+  isChecked (): void{
+	  console.log(this.termsandconidtion);
+  }
  
 /* MakeFileUpload(imageData)  {
 	  let _self = this;
@@ -245,49 +195,6 @@ export class RegisterPage {
 
   };*/ 
   
-  takePhoto(){
-	  this.showLoader('Loading.....');
-	  this.loading.present().then(() => {
-		  this.options = {
-			        quality: 100,
-			        sourceType: this.camera.PictureSourceType.CAMERA,
-			        saveToPhotoAlbum: true,
-			        correctOrientation: true,
-			        destinationType: this.camera.DestinationType.DATA_URL,
-			        mediaType: this.camera.MediaType.PICTURE
-			      }
-				  this.camera.getPicture(this.options).then((imageData) => {
-					  this.loading.dismiss();
-					  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-					  this.photoDataURI = imageData;
-				    }, (err) => {
-				    	this.loading.dismiss();
-				    	this.showAlert(err,"Vuqa");
-			      });
-	  });
-  };
-  
-  browsePhoto(){
-	  this.showLoader('Loading.....');
-	  this.loading.present().then(() => {
-	  this.options = {
-		        quality: 100,
-		        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		        saveToPhotoAlbum: true,
-		        correctOrientation: true,
-		        destinationType: this.camera.DestinationType.DATA_URL,
-		        mediaType: this.camera.MediaType.PICTURE
-		      }
-			  this.camera.getPicture(this.options).then((imageData) => {
-				  this.loading.dismiss();
-				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-				  this.photoDataURI = imageData;
-			    }, (err) => {
-			    	this.loading.dismiss();
-			    	this.showAlert(err,"Vuqa");
-		      });
-	  });
-  };
 
   public registerBack() {
 		this.nav.setRoot(LoginPage);
@@ -328,8 +235,6 @@ export class RegisterPage {
 	    }else if(currentIndex == 2){
 	    	return this.SubmitSignUpBIO();
 	    	
-	    }else if(currentIndex == 3){
-	    	this.nav.setRoot(LoginPage);
 	    }
   };
   
@@ -353,7 +258,7 @@ export class RegisterPage {
 	    if (currentIndex == 0) {
 	    	this.firstSlider = true;
 		}
-	    if(currentIndex == 3){
+	    if(currentIndex == 2){
 	    	this.lastSlider = true;
 	    }
   };
@@ -371,25 +276,5 @@ export class RegisterPage {
 	  alert.present();
 	};
 	
- uploadActionSheet() {
-	   let actionSheet = this.actionSheetCtrl.create({
-	     title: 'Modify your album',
-	     buttons: [
-	       {
-	         text: 'Take Photo',
-	         handler: () => {
-	        	 this.takePhoto();
-	         }
-	       },
-	       {
-	         text: 'Browse Photo',
-	         handler: () => {
-	           this.browsePhoto();
-	         }
-	       }
-	     ]
-	   });
 
-	   actionSheet.present();
- };
 }

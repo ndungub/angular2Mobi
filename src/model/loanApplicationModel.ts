@@ -32,6 +32,7 @@ export class Results {
         public loanstatus: string,
         public disbursedon: string,
         public loanbalance: number,
-        public nextinstallmentdate: string
+        public nextinstallmentdate: string,
+        public isactive: string
     ){}
 }

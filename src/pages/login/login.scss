@@ -8,8 +8,9 @@
 		position: relative;
 
 		img {
-			/*height: 15pc;*/
-			/*margin-left: 10%;*/
+			height: 200px;
+			margin-left: 20px;
+			text-align: center;
 		}
 		.login-title {
 			position: absolute;
@@ -20,6 +21,10 @@
 			border: 0;
 			background: rgba(255, 255, 255, 0.6);
 			padding: 10px;
+			font-size: 2rem;
+			color: #da1921;
+			background: #434343;
+			text-align: left;
 		}
 
 		h1 {
