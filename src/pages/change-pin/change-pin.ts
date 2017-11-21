@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavController, Nav, LoadingController,AlertController, ToastController } from 'ionic-angular';
+import * as _ from 'underscore';
+
 import { HomePage } from '../../pages/home/home';
 
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
@@ -8,6 +10,7 @@ import { ShareServiceProvider } from '../../providers/share-service/share-servic
 
 import {Observable} from 'rxjs/Rx';
 import { RequestModel } from '../../model/requestModel'
+
 
 /**
  * Generated class for the ChangePinPage page.
@@ -23,7 +26,7 @@ import { RequestModel } from '../../model/requestModel'
 export class ChangePinPage {
 	loading: any;
 	submitted = false;
-	changepin = {  pinno:'' , confirmpin:''};
+	changepin = {currentpinno: '', pinno:'' , confirmpin:''};
 	constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider,  public loadingCtrl: LoadingController,private alertCtrl: AlertController, private toastCtrl: ToastController) {
     	
     };
@@ -49,9 +52,14 @@ export class ChangePinPage {
 		    let changePinOperation:Observable<RequestModel>;
 		    
 		    
-		    let hashed:any;
-	    	hashed = this.authService.encryptSalt(this.changepin.pinno);
+		   
+		    let currentHashed:any = this.authService.encryptSalt(this.changepin.currentpinno);
+		    let hashed:any = this.authService.encryptSalt(this.changepin.pinno);
 	    	let newData = {};
+	    	
+	    	newData['encryptedoldpin'] = currentHashed.encrypted;
+	    	newData['oldpiniv'] = currentHashed.iv;
+	    	newData['oldpinkey'] = currentHashed.key;
 	    	
 	    	newData['encrypted'] = hashed.encrypted;
 	    	newData['iv'] = hashed.iv;
