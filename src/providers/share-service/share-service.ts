@@ -18,6 +18,7 @@ export class ShareServiceProvider {
 	idtypedesc: string;
 	medal: string;
 	eligibleamount: number;
+	loanlimit: number;
 	
 
 	loanid: number;
@@ -33,6 +34,8 @@ export class ShareServiceProvider {
 	loaninterest: number;
 
 	detailloanid: number;
+
+	requirepinchange: number;
  
     constructor() {
         this.loginSessionMobileNo = '';
@@ -106,6 +109,14 @@ export class ShareServiceProvider {
         return this.eligibleamount;
     }  
 
+    //Loan limit
+    setLoanLimit(loanlimit) {
+        this.loanlimit = loanlimit;       
+    }
+  
+    getLoanLimit() {
+        return this.loanlimit;
+    } 
  
     //Loan ID
     setLoanid(loanid) {
@@ -206,6 +217,14 @@ export class ShareServiceProvider {
     getDetailLoanId() {
         return this.detailloanid;
     }  
-    
+
+    //Require password change
+    setRequirePinChange(requirepinchange) {
+        this.requirepinchange = requirepinchange;       
+    }
+  
+    getRequirePinChange() {
+        return this.requirepinchange;
+    }  
     
 }

@@ -54,16 +54,21 @@
 			<ion-col>
 				<button ion-button (click)="doLogin(loginForm)" type="submit" block>Login</button>
 			</ion-col>
-			<ion-col>
+			<ion-col [hidden]= "!deviceChanged">
 				<button ion-button (click)="register()" color="light" block>Sign Up</button>
 			</ion-col>
 		</ion-row>
 		<ion-row responsive-sm>
-			<ion-col col-6 offset-4>
+			<ion-col col-4 offset-2>
 				 <p class="text-center">
 			          <a href="#" (click)="forgotPassword()">Forgot PIN?</a>
 		         </p>
 			</ion-col>
+			<ion-col col-4 [hidden]= "deviceChanged">
+				 <p class="text-center">
+			          <a href="#" (click)="register()"> | Or Sign Up</a>
+		         </p>
+			</ion-col>			
 		</ion-row>
 		<ion-row responsive-sm>
 			<ion-col >
@@ -71,7 +76,7 @@
 			      	Social Login
 			     </button> 
 			</ion-col>
-		</ion-row>		
+		</ion-row>	
 	    
      </ion-list>  
   </form>

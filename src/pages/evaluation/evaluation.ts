@@ -26,7 +26,7 @@ export class EvaluationPage {
   constructor(public app: App, public navCtrl: NavController,  public nav: Nav,  public navParams: NavParams, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController, private toastCtrl: ToastController) {
 	  this.navCtrl = navCtrl;
 	  this.evaluationTab = "segment"  + this.shareService.getMedal().toLowerCase();
-	  this.statusRating = this.shareService.getMedal() + " (KES " + this.toNum(this.shareService.getEligibleAmount()) + ")";
+	  this.statusRating = this.shareService.getMedal() + " (KES " + this.toNum(this.shareService.getLoanLimit()) + ")";
   }
 
   ionViewDidLoad() {

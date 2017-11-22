@@ -43,14 +43,8 @@ export class RegisterPage {
 
 	//response =  new RequestModel();
 	
-	ngOnInit() {
-	    this.slides.lockSwipes(true); // Lock the slides
-	    let currentIndex = this.slides.getActiveIndex();
-	  };
+
 	  
-	  
-	  
-	
     constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, public events: Events) {
     	this.today = new Date().toISOString();
     	this.dob = new Date().toISOString();
@@ -141,6 +135,7 @@ export class RegisterPage {
 	                	this.loading.dismiss();
 	                	
 	                	if(response.retcode == "000"){
+	                		//localStorage.setItem('registered', true);
 	                		this.slides.lockSwipes(false);
 	                	    this.slides.slideNext();
 	                	    this.slides.lockSwipes(true);

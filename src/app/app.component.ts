@@ -14,6 +14,10 @@ import { PhotouploadPage } from '../pages/photoupload/photoupload';
 
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { ShareServiceProvider } from '../providers/share-service/share-service';
+import { LoanServiceProvider } from '../providers/loan-service/loan-service';
+
+import { LoanApplicationModel } from '../model/loanApplicationModel';
+import { LoansModel } from '../model/loansModel';
 
 import {Observable} from 'rxjs/Rx';
 import { RequestModel } from '../model/requestModel';
@@ -32,16 +36,17 @@ export class MyApp {
   accountPages
   rootPage:any = LoginPage;
   private menu: MenuController;
-  private authService: AuthServiceProvider;
-  private shareService: ShareServiceProvider;
+  //private authService: AuthServiceProvider;
+  //private shareService: ShareServiceProvider;
   private loadingCtrl: LoadingController;
   private alertCtrl: AlertController;
   loading: any;
   
   menuFullNames: string;
   menuMedal: string;
+  
 
-  constructor(platform: Platform, menu: MenuController, alertCtrl: AlertController, loadingCtrl: LoadingController, authService: AuthServiceProvider, shareService: ShareServiceProvider, statusBar: StatusBar, splashScreen: SplashScreen, public events: Events) {
+  constructor(platform: Platform, menu: MenuController, alertCtrl: AlertController, loadingCtrl: LoadingController, public authService: AuthServiceProvider,public loanService: LoanServiceProvider, public shareService: ShareServiceProvider, statusBar: StatusBar, splashScreen: SplashScreen, public events: Events) {
    
 	  platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -51,7 +56,7 @@ export class MyApp {
       this.menu = menu;
       this.alertCtrl = alertCtrl;
       this.loadingCtrl = loadingCtrl;
-      this.authService = authService;
+      //this.authService = authService;
       
       
       
@@ -88,7 +93,12 @@ export class MyApp {
 	  }else if(page.name == 'signoutpage'){
 		  this.nav.setRoot(LoginPage);
 	  }else{
-		  this.nav.setRoot(page.component);
+		  if(page.name == 'loanapplicationpage' || page.name == 'paymentspage'){
+			  this.getActiveloan(page);
+		  }else{
+			  this.nav.setRoot(page.component);
+		  }
+		  
 	  }
 	   
 	  this.menu.close();
@@ -99,10 +109,70 @@ export class MyApp {
 	  this.menu.close();
   };
   
+ //get loan balance 
+	private getActiveloan (page): void {
+		
+	    this.showLoader('Checking loan status ...');
+	    let registerOperation:Observable<LoansModel>;
+
+	    this.loading.present().then(() => {
+	    	let loanBalanceData: any ={};
+	    
+	    	loanBalanceData['mobileno'] = this.shareService.getLoginSessionMobileNo();
+	    	loanBalanceData['loanstatus'] = 3;
+	    	
+	    	let data = {data: loanBalanceData};
+	    	
+	    	registerOperation = this.loanService.getActiveLoan(data);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	if(response.retcode == "000"){	
+	                		let loans: any =  response.results;
+	                		loans = loans.sort((a,b) => b.loanid - a.loanid);
+	                		let activeLoan: any = loans.find(x => x.loanstatus == 3);
+	                		
+	                		if(page.name == 'paymentspage'){
+	                			if(activeLoan.loanstatus == '3'){
+	                				this.nav.setRoot(page.component);
+	                			}else{
+	                				this.showAlert("You don't have an active loan for payment","Vuqa");
+	                			}
+	                			return;
+	                		}
+	                		if(activeLoan.loanstatus == '3'){
+	                			this.showAlert("You have an existing loan of " + this.toNum(activeLoan.loanbalance),"Vuqa");
+	                		}else if(this.shareService.getEligibleAmount() == 0){
+	                			this.showAlert("You are not eligible to borrow with vuqa","Vuqa");
+	                			
+	                		}else{
+	                			this.nav.setRoot(page.component);
+	                		}
+	                	}else{
+	                		if(response.retcode == "003"){
+	                			if(this.shareService.getEligibleAmount() == 0){
+		                			this.showAlert("You are not eligible to borrow with vuqa","Vuqa");
+		                			
+		                		}else{
+		                			this.nav.setRoot(page.component);
+		                		}
+	                		}else{
+	                			this.showAlert(response.retmsg,"Vuqa");
+	                		}
+	                		
+	                	}
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
+	    });
+	};
 
   
   logout() {
-	    this.showLoader();
+	    this.showLoader('Logging out.....');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    this.loading.present().then(() => {
@@ -123,10 +193,14 @@ export class MyApp {
 	    });
 	    
 };
-  
-showLoader(){
+toNum (num): number{
+	  num  = Math.round(num);
+	  return num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+}
+
+showLoader(msg){
     this.loading = this.loadingCtrl.create({
-        content: 'Authenticating...'
+        content: msg
     });
 
     this.loading.present();

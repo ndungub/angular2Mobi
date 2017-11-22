@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, NavController, Nav, LoadingController, ToastController } from 'ionic-angular';
+import { App, NavController, Nav, LoadingController, ToastController,AlertController } from 'ionic-angular';
 
 //Services
 import { ShareServiceProvider } from '../../providers/share-service/share-service';
@@ -11,6 +11,11 @@ import { EvaluationPage } from '../evaluation/evaluation';
 import { LoanapplicationPage } from '../loanapplication/loanapplication';
 import { LoansPage } from '../loans/loans';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
+
+import { LoanServiceProvider } from '../../providers/loan-service/loan-service';
+import { LoansModel } from '../../model/loansModel';
+
+import {Observable} from 'rxjs/Rx';
 
 //Events
 import { Events } from 'ionic-angular';
@@ -31,8 +36,10 @@ export class HomePage {
   qualifiedAmout:any;
   currentMedal: string;
   medalPath: string;
+  eligibilityStatus: string;
+  canApply: boolean = true;
   
-  constructor(public app: App, public navCtrl: NavController,  public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController, private toastCtrl: ToastController, public events: Events) {
+  constructor(public app: App, public navCtrl: NavController,  public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider,public loanService: LoanServiceProvider, public loadingCtrl: LoadingController,private alertCtrl: AlertController, private toastCtrl: ToastController, public events: Events) {
     if(localStorage.getItem("token")) {
       this.isLoggedIn = true;
     }
@@ -45,22 +52,81 @@ export class HomePage {
   
   onLoginIn() {
 	  this.events.publish('sharedServices',this.shareService);
-	  //this.qualifiedAmout = 'KES ' + Math.round(this.shareService.getEligibleAmount()).toString();
-	  this.qualifiedAmout = this.toNum(this.shareService.getEligibleAmount());
+	  
+	  this.qualifiedAmout = this.toNum(this.shareService.getLoanLimit());
+	  if(this.shareService.getEligibleAmount() > 0){
+		  this.eligibilityStatus = "You are eligible to borrow up to " + this.toNum(this.shareService.getEligibleAmount());
+	  }else{
+		  this.getActiveloan();
+		  
+	  }
+	  
 	  this.currentMedal = this.shareService.getMedal();
 	  this.medalPath = "assets/images/"  + this.shareService.getMedal().toLowerCase() + ".png";
   };
 
+  //get loan balance 
+	private getActiveloan (): void {
+		
+	    this.showLoader('Checking loan status ...');
+	    let registerOperation:Observable<LoansModel>;
 
+	    this.loading.present().then(() => {
+	    	let loanBalanceData: any ={};
+	    
+	    	loanBalanceData['mobileno'] = this.shareService.getLoginSessionMobileNo();
+	    	loanBalanceData['loanstatus'] = 3;
+	    	
+	    	let data = {data: loanBalanceData};
+	    	
+	    	registerOperation = this.loanService.getActiveLoan(data);
+	    	registerOperation.subscribe(
+	    			response => {
+	                	this.loading.dismiss();
+	                	if(response.retcode == "000"){	
+	                		let loans: any =  response.results;
+	                		loans = loans.sort((a,b) => b.loanid - a.loanid);
+	                		let activeLoan: any = loans.find(x => x.loanstatus == 3);
+	                	
+	                		if(activeLoan.loanstatus == '3'){
+	                			this.canApply = false;
+	                			this.eligibilityStatus = "You have an existing loan of " + this.toNum(activeLoan.loanbalance);
+	                		}
+	                	}else{
+	                		if(response.retcode == "003"){
+	                			if(this.shareService.getEligibleAmount() == 0){
+	                				this.canApply = false;
+	                				this.eligibilityStatus = "You are not eligible to borrow with vuqa";	
+		                		}
+	                		}else{
+	                			this.showAlert(response.retmsg,"Vuqa");
+	                		}
+	                		
+	                	}
+	                }, 
+	                err => {
+	                    // Log errors if any
+	                	this.showAlert(err,"Vuqa");
+	                    this.loading.dismiss();
+	        });
+	    });
+	};
 	
-  showLoader(){
+  showLoader(msg){
     this.loading = this.loadingCtrl.create({
-        content: 'Authenticating...'
+        content: msg
     });
 
     this.loading.present();
   }
-
+  showAlert(msg,title) {
+	  let alert = this.alertCtrl.create({
+	    title: title,
+	    subTitle: msg,
+	    buttons: ['Dismiss']
+	  });
+	  alert.present();
+	};
   presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,

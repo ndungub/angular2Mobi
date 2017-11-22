@@ -1,5 +1,5 @@
 <!--
-  Generated template for the ChangePinPage page.
+  Generated template for the LoginchamgepinPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -17,14 +17,6 @@
 		<p ion-text [hidden]="pinno.valid" color="danger" padding-left>
 			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Invalid PIN
 		</p>
-		<ion-row>
-			<ion-col col-12>
-			    <ion-item>
-			      <ion-label stacked>Current Pin</ion-label>
-			      <ion-input [(ngModel)]="changepin.currentpinno" name="currentpinno" type="password" placeholder="Current PIN" #currentpinno="ngModel" required></ion-input>
-			    </ion-item>
-		    </ion-col>
-	   	</ion-row>
 		<ion-row>
 			<ion-col col-12>
 			    <ion-item>
@@ -46,7 +38,7 @@
 		</p>
 		<ion-row responsive-sm>
 			<ion-col>
-				<button ion-button (click)="doChangePassword(changepasswordForm)" type="submit" block>Change PIN</button>
+				<button ion-button (click)="doChangePIN(changepasswordForm)" type="submit" block>Change PIN</button>
 			</ion-col>
 		</ion-row>
 	</form>
@@ -62,3 +54,4 @@
 
   </ion-toolbar>
 </ion-footer>
+

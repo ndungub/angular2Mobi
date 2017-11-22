@@ -14,6 +14,8 @@ export class Results {
         public idno: string,
         public idtypedesc: string,
         public medal: string,
-        public eligibleamount: string
+        public eligibleamount: string,
+        public loanlimit: string,
+        public requirepinchange: number
     ){}
 }

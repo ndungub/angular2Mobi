@@ -40,11 +40,11 @@ export class PaymentsPage {
 	    this.loading.present().then(() => {
 	    	
 	    	this.paymentData['mobileno'] = this.shareService.getLoginSessionMobileNo();
-	    	this.paymentData['loanid'] = 4;
+	    	this.paymentData['loanstatus'] = 3;
 	    	
 	    	let data = {data: this.paymentData};
 	    	
-	    	registerOperation = this.loanService.getSingleLoanBalances(data);
+	    	registerOperation = this.loanService.getActiveLoan(data);
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();

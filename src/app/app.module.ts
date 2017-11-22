@@ -24,6 +24,10 @@ import { PhotouploadPage } from '../pages/photoupload/photoupload';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
+import { LoginchangepinPage } from '../pages/loginchangepin/loginchangepin';
+
+
+
 import {File} from '@ionic-native/file';
 import { LoanServiceProvider } from '../providers/loan-service/loan-service';
 
@@ -44,7 +48,9 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     PhotouploadPage,
     AboutPage,
     ContactPage,
-    ChangePinPage
+    ChangePinPage,
+    LoginchangepinPage
+    
   ],
   imports: [
     BrowserModule,
@@ -67,7 +73,9 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     PhotouploadPage,
     AboutPage,
     ContactPage,
-    ChangePinPage
+    ChangePinPage,
+    LoginchangepinPage
+  
     
   ],
   providers: [
