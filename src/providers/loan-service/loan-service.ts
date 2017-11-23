@@ -14,8 +14,8 @@ import 'rxjs/add/operator/catch';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular DI.
 */
-let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
-//let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
+//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
+let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
 
 
 @Injectable()
