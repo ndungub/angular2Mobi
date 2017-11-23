@@ -27,11 +27,10 @@ export class EvaluationPage {
 	  this.navCtrl = navCtrl;
 	  this.evaluationTab = "segment"  + this.shareService.getMedal().toLowerCase();
 	  this.statusRating = this.shareService.getMedal() + " (KES " + this.toNum(this.shareService.getLoanLimit()) + ")";
+	
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EvaluationPage');
-  }
+
 
 
   toNum (num): number{

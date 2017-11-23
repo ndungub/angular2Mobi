@@ -20,9 +20,6 @@
 		</ion-card>
 		
 		<ion-list>
-	        <ion-list-header>
-	          Navigate
-	        </ion-list-header>
 			<ion-item *ngFor="let p of navigatePages" (click)="openPage(p)">
 				<ion-icon [name]="p.icon" item-left></ion-icon>
 				{{p.title}}

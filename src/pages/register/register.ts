@@ -1,11 +1,16 @@
 import { Injectable, Component,ViewChild } from '@angular/core';
-import { NavController, Nav, Slides, LoadingController, AlertController, ToastController,ModalController } from 'ionic-angular';
+import { NavController, Nav, Slides, LoadingController, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
+import { ModaltermsPage } from '../modalterms/modalterms';
+
+//Services
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 import {Observable} from 'rxjs/Rx';
 import { RequestModel } from '../../model/requestModel';
+
+//Event
 import { Events } from 'ionic-angular';
 
 //import { Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
@@ -45,9 +50,15 @@ export class RegisterPage {
 	
 
 	  
-    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, public events: Events) {
+    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, public events: Events, public modalCtrl : ModalController) {
     	this.today = new Date().toISOString();
     	this.dob = new Date().toISOString();
+    	
+    	
+    	events.subscribe('termsandconditions', (data) => {
+    		this.termsandconidtion = data;
+        });
+    	
     	
     }
 
@@ -116,11 +127,6 @@ export class RegisterPage {
 	    });
   };
   
-  ValidateSignUpBIO(){
-	  this.slides.lockSwipes(false);
-	  this.slides.slideNext();
-	  this.slides.lockSwipes(true);
-  };
   
   SubmitSignUpBIO()  {
 	  this.showLoader('Submitting.....');
@@ -153,7 +159,10 @@ export class RegisterPage {
   };
   
   isChecked (): void{
-	  console.log(this.termsandconidtion);
+	  if(this.termsandconidtion){
+		  let termsModal = this.modalCtrl.create(ModaltermsPage);
+		  termsModal.present(); 
+	  }
   }
  
 /* MakeFileUpload(imageData)  {
@@ -226,11 +235,10 @@ export class RegisterPage {
 	    if(currentIndex == 0){
 	    	return this.ValidateSignUpOTP();	
 	    }else if(currentIndex == 1){
-	    	return this.ValidateSignUpBIO();
-	    }else if(currentIndex == 2){
 	    	return this.SubmitSignUpBIO();
-	    	
-	    }
+	    }else if (currentIndex == 2) {
+	    	this.nav.setRoot(LoginPage);
+        }
   };
   
   backSlide(){

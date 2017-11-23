@@ -95,14 +95,33 @@ export class MyApp {
 	  }else{
 		  if(page.name == 'loanapplicationpage' || page.name == 'paymentspage'){
 			  this.getActiveloan(page);
+		  }else if(page.name == 'evaluationpage'){
+			  this.viewEvaluation(page);
 		  }else{
 			  this.nav.setRoot(page.component);
 		  }
+		  
+		  
 		  
 	  }
 	   
 	  this.menu.close();
   };
+  
+  viewEvaluation(page) {
+	  let loading = this.loadingCtrl.create({
+		    spinner: 'bubbles',
+		    content: 'Evaluating Please Wait...'
+		  });
+
+		  loading.present();
+
+		  setTimeout(() => {
+			  this.nav.setRoot(page.component);
+			  loading.dismiss();
+		  }, 5000);
+	  	
+  }
 
   UploadPhoto() {
 	  this.nav.setRoot(PhotouploadPage); 

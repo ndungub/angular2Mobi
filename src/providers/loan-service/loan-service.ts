@@ -14,8 +14,8 @@ import 'rxjs/add/operator/catch';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular DI.
 */
-//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
-let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
+let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
+//let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
 
 
 @Injectable()
@@ -111,10 +111,10 @@ export class LoanServiceProvider {
   payLoan (body: any): Observable<LoanApplicationModel> {
       let bodyString = JSON.stringify(body); 
       let headers = new Headers({ 'Content-Type': 'application/json' });
-      headers.append('Authorization', '07e99e74-801c-11e7-b2c7-ac162d475b5d');
-      
+      //headers.append('Authorization', '07e99e74-801c-11e7-b2c7-ac162d475b5d');
       let options = new RequestOptions({ headers: headers }); 
       
+      /*
       let url = "https://www.volticpaymentgateway.com/src/integration/paymentrequest/";
 
       this.paymentData["amount"] = body.data.paymentamount;
@@ -125,9 +125,10 @@ export class LoanServiceProvider {
       this.paymentData["token"] = "HMV2G190EIB";
       
       
-      //let data = {data: this.paymentData};
+      let data = {data: this.paymentData};
+      */
 
-      return this.http.post(url, JSON.stringify(this.paymentData) , options) 
+      return this.http.post(apiUrl+'initiatestkpush', body , options) 
                        .map((res:Response) =>
                        		res.json())
                        .catch((error:any) => 

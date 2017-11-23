@@ -27,7 +27,7 @@ import { Events } from 'ionic-angular';
 })
 export class LoginchangepinPage {
 	loading: any;
-	changepin = {};
+	changepin = { pinno:'' , confirmpin:''};
 	submitted = false;
 	
 	constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController, public events: Events) {
@@ -41,10 +41,17 @@ export class LoginchangepinPage {
 		    if (form.valid) {
 		    	this.showLoader();
 			    let validateOperation:Observable<RequestModel>;
-			    //authData = {};
-			    this.changepin['mobileno'] = this.shareService.getLoginSessionMobileNo();
 			    
-			    let authData = {data: this.changepin};
+			    let hashed:any = this.authService.encryptSalt(this.changepin.pinno);
+			    
+			    let newData = {};
+			    newData['encrypted'] = hashed.encrypted;
+		    	newData['iv'] = hashed.iv;
+		    	newData['key'] = hashed.key;
+		    	newData['mobileno'] = this.shareService.getLoginSessionMobileNo();
+
+			    
+			    let authData = {data: newData};
 			    this.loading.present().then(() => {
 			    	
 			    	validateOperation = this.authService.firstTimeChangePIN(authData);

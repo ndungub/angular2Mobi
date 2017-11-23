@@ -26,6 +26,8 @@ import { ContactPage } from '../pages/contact/contact';
 import { ChangePinPage } from '../pages/change-pin/change-pin';
 import { LoginchangepinPage } from '../pages/loginchangepin/loginchangepin';
 
+import { ModaltermsPage } from '../pages/modalterms/modalterms';
+
 
 
 import {File} from '@ionic-native/file';
@@ -49,7 +51,8 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     AboutPage,
     ContactPage,
     ChangePinPage,
-    LoginchangepinPage
+    LoginchangepinPage,
+    ModaltermsPage
     
   ],
   imports: [
@@ -57,6 +60,7 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     HttpModule,
     IonicModule.forRoot(MyApp)
   ],
+  
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -74,7 +78,8 @@ import { LoanServiceProvider } from '../providers/loan-service/loan-service';
     AboutPage,
     ContactPage,
     ChangePinPage,
-    LoginchangepinPage
+    LoginchangepinPage,
+    ModaltermsPage
   
     
   ],

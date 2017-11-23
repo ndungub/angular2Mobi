@@ -143,7 +143,18 @@ export class HomePage {
   }
 
   viewEvaluation() {
-	  	this.nav.setRoot(EvaluationPage);
+	  let loading = this.loadingCtrl.create({
+		    spinner: 'bubbles',
+		    content: 'Evaluating Please Wait...'
+		  });
+
+		  loading.present();
+
+		  setTimeout(() => {
+			  this.nav.setRoot(EvaluationPage);
+			  loading.dismiss();
+		  }, 5000);
+	  	
   }
   viewLoanApplication() {
 	  	this.nav.setRoot(LoanapplicationPage);
