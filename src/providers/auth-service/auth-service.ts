@@ -16,9 +16,7 @@ import CryptoJS from 'crypto-js';
   for more info on providers and Angular DI.
 */
 
-//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
-
-let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
+let apiUrl = 'http://localhost/api/v1/index.php/';
 
 @Injectable()
 export class AuthServiceProvider {
