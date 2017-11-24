@@ -68,7 +68,7 @@ export class HomePage {
   //get loan balance 
 	private getActiveloan (): void {
 		
-	    this.showLoader('Checking loan status ...');
+	    this.showLoader('Initializing ...');
 	    let registerOperation:Observable<LoansModel>;
 
 	    this.loading.present().then(() => {

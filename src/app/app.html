@@ -1,21 +1,24 @@
 <ion-menu id="leftMenu" [content]="content" type="overlay">
-	<ion-header>
+	<!--  <ion-header>
 		<ion-toolbar>
 			<ion-title>Vuqa</ion-title>
 		</ion-toolbar>
-	</ion-header>
+	</ion-header>-->
 	
 	<ion-content>
 		<ion-card text-center class="hide-card" no-lines>
-		    <img src="assets/images/avatar.png" class="custom-avatar"/>
-		    <h2>
-		    	{{menuFullNames}}
-		    	<a href="#"  class="round-button" (click)="UploadPhoto()"><ion-icon name="create" item-right></ion-icon></a>
-		    </h2>
-		     <h2>
-		     	<ion-icon name="medal"></ion-icon>
-		    	{{menuMedal}} 
-		    </h2>
+		 	<ion-row>
+		    	<img src="assets/images/avatar.png" class="custom-avatar"/>
+			</ion-row>
+			<ion-row>
+		    	<div class="namefield">{{menuFullNames}}</div>
+		    	<div><a href="#"  class="round-button" (click)="UploadPhoto()"><ion-icon name="create" item-right></ion-icon></a></div>
+		    </ion-row>
+		    <ion-row>
+		    	<ion-col col-offset-4>
+		    		<div class="medal"><ion-icon name="medal"></ion-icon>{{menuMedal}} </div>
+		    	</ion-col>
+		    </ion-row>
 		   
 		</ion-card>
 		
@@ -26,16 +29,12 @@
 			</ion-item>
 			
 	        <ion-list-header>
-	          Others
+	          Account
 	        </ion-list-header>
 			<ion-item *ngFor="let p of otherPages" (click)="openPage(p)">
 				<ion-icon [name]="p.icon" item-left></ion-icon>
 				{{p.title}}
 			</ion-item>
-			
-	        <ion-list-header>
-	          Account
-	        </ion-list-header>
 			<ion-item *ngFor="let p of accountPages" (click)="openPage(p)">
 				<ion-icon [name]="p.icon" item-left></ion-icon>
 				{{p.title}}

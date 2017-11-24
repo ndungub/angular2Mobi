@@ -36,7 +36,7 @@
             <ion-card-content class="outer-content">
               <ion-list>
                 <button ion-item>
-                  <h3>{{eligibilityStatus}}</h3>
+                  <div><p>{{eligibilityStatus}}</p></div>
                 </button>
               </ion-list>
             </ion-card-content>
@@ -62,9 +62,9 @@
               	<ion-item text-wrap>
               		<ion-avatar item-start>
 	                  <img [src]="medalPath" alt="">
-	                  	{{currentMedal}}
+	                  	<div><p>{{currentMedal}}</p></div>
 	                </ion-avatar>
-                  <h3>Congratulations! You qualify for up to KES {{qualifiedAmout}}</h3>
+                  <div><p>Congratulations! You qualify for up to KES {{qualifiedAmout}}</p></div>
                 </ion-item>
               </ion-list>
             </ion-card-content>
