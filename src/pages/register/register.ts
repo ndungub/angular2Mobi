@@ -1,15 +1,19 @@
 import { Injectable, Component,ViewChild } from '@angular/core';
-import { NavController, Nav, Slides, LoadingController, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
+import { NavController, Nav, Slides, LoadingController, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
+import { ModaltermsPage } from '../modalterms/modalterms';
+
+//Services
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 import {Observable} from 'rxjs/Rx';
-import { RequestModel } from '../../model/requestModel'
+import { RequestModel } from '../../model/requestModel';
 
-import { Camera } from '@ionic-native/camera';
-//import {Transfer, TransferObject} from '@ionic-native/transfer';
-import {File} from '@ionic-native/file';
+//Event
+import { Events } from 'ionic-angular';
+
+//import { Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 
 
 /**
@@ -22,42 +26,39 @@ import {File} from '@ionic-native/file';
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
-  providers: [[Camera]]
 })
 @Injectable()
 export class RegisterPage {
 	
+
 	@ViewChild(Slides) slides: Slides;
 	public firstSlider = true;
 	public lastSlider = false;
 	public registerOTPSent = false;
 	public photoImage: string;
+	public photoDataURI: string;
 
 	
 	loading: any;
 	regData = {mobileno: ''};
-	validateData = {};
 	today;
 	dob;
-	options:any;
+	termsandconidtion: boolean = false;
+	
 
 	//response =  new RequestModel();
 	
-	ngOnInit() {
-	    this.slides.lockSwipes(true); // Lock the slides
-	    let currentIndex = this.slides.getActiveIndex();
-	    
-	    if (currentIndex == 0) {
-			console.log("");
-		}
-	  };
+
 	  
-	  
-	  
-	
-    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController,private camera: Camera,private actionSheetCtrl: ActionSheetController, private file: File) {
+    constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider,  public loadingCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, public events: Events, public modalCtrl : ModalController) {
     	this.today = new Date().toISOString();
     	this.dob = new Date().toISOString();
+    	
+    	
+    	events.subscribe('termsandconditions', (data) => {
+    		this.termsandconidtion = data;
+        });
+    	
     	
     }
 
@@ -67,9 +68,7 @@ export class RegisterPage {
 
 
   SendSignUpOTP() {
-	  
-	  
-	    this.showLoader();
+	    this.showLoader('Sending OTP.....');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -79,7 +78,6 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	if(response.retcode == "000"){
 	                		this.registerOTPSent = true;
 	                	}else{
@@ -98,7 +96,7 @@ export class RegisterPage {
   };
 
   ValidateSignUpOTP()  {
-	  this.showLoader();
+	  this.showLoader('Validating OTP......');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -108,7 +106,6 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	
 	                	if(response.retcode == "000"){
 	                		
@@ -130,14 +127,9 @@ export class RegisterPage {
 	    });
   };
   
-  ValidateSignUpBIO(){
-	  this.slides.lockSwipes(false);
-	  this.slides.slideNext();
-	  this.slides.lockSwipes(true);
-  };
   
   SubmitSignUpBIO()  {
-	  this.showLoader();
+	  this.showLoader('Submitting.....');
 	    let registerOperation:Observable<RequestModel>;
 	    
 	    let data = {};
@@ -147,17 +139,15 @@ export class RegisterPage {
 	    	registerOperation.subscribe(
 	    			response => {
 	                	this.loading.dismiss();
-	                	this.validateData = response;
 	                	
 	                	if(response.retcode == "000"){
+	                		//localStorage.setItem('registered', true);
 	                		this.slides.lockSwipes(false);
 	                	    this.slides.slideNext();
 	                	    this.slides.lockSwipes(true);
-	                	    this.showAlert(response.retmsg,"Vuqa");
-	                	}else{
-	                		
-	                		this.showAlert(response.retmsg,"Vuqa");
+	                	    
 	                	}
+	                	this.showAlert(response.retmsg,"Vuqa");
 
 	                }, 
 	                err => {
@@ -168,37 +158,14 @@ export class RegisterPage {
 	    });
   };
   
-  MakeFileUpload(imageData)  {
-
-	 
-	  /*'use strict';
-
-	  const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-		  const byteCharacters = atob(b64Data);
-		  const byteArrays = [];
-		  
-		  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-		    const slice = byteCharacters.slice(offset, offset + sliceSize);
-		    
-		    const byteNumbers = new Array(slice.length);
-		    for (let i = 0; i < slice.length; i++) {
-		      byteNumbers[i] = slice.charCodeAt(i);
-		    }
-		    
-		    const byteArray = new Uint8Array(byteNumbers);
-		    
-		    byteArrays.push(byteArray);
-		  }
-		  
-		  const blob = new Blob(byteArrays, {type: contentType});
-		  return blob;
-		};
-		
-		const contentType = 'image/png';
-		const blob = b64toBlob(imageData, contentType);
-		*/
-	 
-
+  isChecked (): void{
+	  if(this.termsandconidtion){
+		  let termsModal = this.modalCtrl.create(ModaltermsPage);
+		  termsModal.present(); 
+	  }
+  }
+ 
+/* MakeFileUpload(imageData)  {
 	  let _self = this;
 	  this.file.resolveLocalFilesystemUrl(imageData).then((fileEntry: any) => {
 		  fileEntry.file(function(file) {
@@ -230,50 +197,17 @@ export class RegisterPage {
 
 		
 
-  }; 
+  };*/ 
   
-  takePhoto(){
-	  this.options = {
-		        quality: 100,
-		        sourceType: this.camera.PictureSourceType.CAMERA,
-		        saveToPhotoAlbum: true,
-		        correctOrientation: true,
-		        destinationType: this.camera.DestinationType.DATA_URL,
-		        mediaType: this.camera.MediaType.PICTURE
-		      }
-			  this.camera.getPicture(this.options).then((imageData) => {
-				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-			    }, (err) => {
-			    	this.showAlert(err,"Vuqa");
-		      }); 
-  };
-  
-  browsePhoto(){
-	  this.options = {
-		        quality: 100,
-		        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-		        saveToPhotoAlbum: true,
-		        correctOrientation: true,
-		        destinationType: this.camera.DestinationType.DATA_URL,
-		        mediaType: this.camera.MediaType.PICTURE
-		      }
-			  this.camera.getPicture(this.options).then((imageData) => {
-				  this.photoImage = 'data:image/jpeg;base64,' + imageData;
-				  //this.MakeFileUpload(imageData);
-				  console.log('rrr')
-			    }, (err) => {
-			    	this.showAlert(err,"Vuqa");
-		      }); 	  
-  };
 
   public registerBack() {
 		this.nav.setRoot(LoginPage);
 		//this.navCtrl.push(tile.component);
 	};
 
-  showLoader(){
+  showLoader(msg){
 	    this.loading = this.loadingCtrl.create({
-	        content: 'Authenticating...'
+	        content: msg
 	    });
 
 	    this.loading.present();
@@ -301,18 +235,10 @@ export class RegisterPage {
 	    if(currentIndex == 0){
 	    	return this.ValidateSignUpOTP();	
 	    }else if(currentIndex == 1){
-	    	return this.ValidateSignUpBIO();
-	    }else if(currentIndex == 2){
 	    	return this.SubmitSignUpBIO();
-	    	//this.MakeFileUpload();
-	    }else if(currentIndex == 3){
+	    }else if (currentIndex == 2) {
 	    	this.nav.setRoot(LoginPage);
-	    }
-	    
-	    
-	    
-
-
+        }
   };
   
   backSlide(){
@@ -335,7 +261,7 @@ export class RegisterPage {
 	    if (currentIndex == 0) {
 	    	this.firstSlider = true;
 		}
-	    if(currentIndex == 3){
+	    if(currentIndex == 2){
 	    	this.lastSlider = true;
 	    }
   };
@@ -353,25 +279,5 @@ export class RegisterPage {
 	  alert.present();
 	};
 	
- uploadActionSheet() {
-	   let actionSheet = this.actionSheetCtrl.create({
-	     title: 'Modify your album',
-	     buttons: [
-	       {
-	         text: 'Take Photo',
-	         handler: () => {
-	        	 this.takePhoto();
-	         }
-	       },
-	       {
-	         text: 'Browse Photo',
-	         handler: () => {
-	           this.browsePhoto();
-	         }
-	       }
-	     ]
-	   });
 
-	   actionSheet.present();
- };
 }

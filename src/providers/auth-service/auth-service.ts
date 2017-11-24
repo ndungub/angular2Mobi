@@ -15,7 +15,10 @@ import CryptoJS from 'crypto-js';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular DI.
 */
-let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/';
+
+//let apiUrl = 'http://localhost/imabservice/vuqa/api/v1/index.php/';
+
+let apiUrl = 'https://demoapp.imab.co.ke/vuqa/api/v1/';
 
 @Injectable()
 export class AuthServiceProvider {
@@ -24,9 +27,12 @@ export class AuthServiceProvider {
 	private progressObserver: any;
 
   constructor(public http: Http) {
-	  this.progress$ = new Observable(observer => {
+	  /*this.progress$ = new Observable(observer => {
 	        this.progressObserver = observer
-	    });
+	  });*/
+	  this.progress$ = Observable.create(observer => {
+	        this.progressObserver = observer
+	    }).share();
   }
   
 
@@ -58,6 +64,76 @@ export class AuthServiceProvider {
                        		));
   };
   
+  sendForgotPinOTP (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpindetails', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+  
+  validateSendForgotPinOTP (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpinvalidateotp', body, options) 
+               .map((res:Response) =>
+               		res.json())
+               .catch((error:any) => 
+               		Observable.throw(
+               				error.json().error || 'Server error'
+               		));
+  };
+  
+  resetForgotPIN (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanresetpin', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+
+  changePIN (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanchangepin', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+
+  firstTimeChangePIN (body: Object): Observable<RequestModel> {
+      let bodyString = JSON.stringify(body); 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'mloanfirsttimesetpin', body, options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+  };
+   
   sendRegisterOTP (body: Object): Observable<RequestModel> {
       let bodyString = JSON.stringify(body); // Stringify payload
       let headers = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
@@ -124,7 +200,9 @@ export class AuthServiceProvider {
 	            xhr.upload.onprogress = (event) => {
 	                this.progress = Math.round(event.loaded / event.total * 100);
 
-	                this.progressObserver.next(this.progress);
+	                //this.progressObserver.next(this.progress);
+	                
+	               
 	            };
 
 	            xhr.open('POST', url, true);
@@ -165,8 +243,18 @@ export class AuthServiceProvider {
 	  
   };
   
-  logout(){
-	    return new Promise((resolve, reject) => {
+  logout(): Observable<RequestModel> {
+      let headers = new Headers({ 'Content-Type': 'application/json','X-Auth-Token': localStorage.getItem('token') });
+      let options = new RequestOptions({ headers: headers }); 
+
+      return this.http.post(apiUrl+'logout','', options) 
+                       .map((res:Response) =>
+                       		res.json())
+                       .catch((error:any) => 
+                       		Observable.throw(
+                       				error.json().error || 'Server error'
+                       		));
+	    /*return new Promise((resolve, reject) => {
 	        let headers = new Headers();
 	        headers.append('X-Auth-Token', localStorage.getItem('token'));
 
@@ -176,7 +264,7 @@ export class AuthServiceProvider {
 	          }, (err) => {
 	            reject(err);
 	          });
-	    });
+	    });*/
 	};
 
 }

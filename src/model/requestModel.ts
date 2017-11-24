@@ -1,17 +1,3 @@
-/*export class RequestModel {
-   retcode: string;
-   retmsg: string;
-   //results: string;
-   results: Results;
-   constructor() {}
-   
-   export class Results {
-	   public name: string;
-       public idno: string;
-   }
-   constructor(){}
-} */
-
 export class RequestModel {
     constructor(
         public retcode: string,
@@ -23,10 +9,13 @@ export class RequestModel {
 
 export class Results {
     constructor(
-        public name: string,
+    	public mobileno: string,
+    	public name: string,
         public idno: string,
         public idtypedesc: string,
         public medal: string,
-        public eligibleamount: string
+        public eligibleamount: string,
+        public loanlimit: string,
+        public requirepinchange: number
     ){}
 }

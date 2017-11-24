@@ -5,14 +5,8 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar hideBackButton>
-    <ion-buttons left>
-        <button ion-button (click)="registerBack()">
-            <ion-icon  name="arrow-back"></ion-icon>
-        </button>
-    </ion-buttons>
-    <ion-title>Register</ion-title>
+  <ion-navbar>
+    <ion-title>Vuqa</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +14,7 @@
 
 <ion-content padding>
   
-  <form class="register-form">
+  <form class="registerForm">
   
 	<ion-slides (ionSlideDidChange)="slideChanged()" >
 		<ion-slide>
@@ -35,21 +29,28 @@
 		    <ion-item>
 		      <ion-label stacked>Mobile No</ion-label>
 		      <ion-badge item-left>+254</ion-badge>
-		      <ion-input [(ngModel)]="regData.mobileno" name="mobileno" type="number" placeholder="Mobile No" ></ion-input>
+		      <ion-input [(ngModel)]="regData.mobileno" name="mobileno" type="number" placeholder="Mobile No" required></ion-input>
 		    </ion-item>
+	       
+	       <ion-item class="termscheckbox" >
+	           <ion-checkbox secondary #terms name="terms" value="" [(ngModel)]="termsandconidtion" (ionChange)="isChecked()"></ion-checkbox>
+	           <ion-label>I accept the <a href="#">Terms & Conditions</a></ion-label>
+	       </ion-item>
 		    
-		    <ion-item>
-		    	<ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp; &nbsp;</ion-badge>
-			    <button ion-button block (tap)="SendSignUpOTP()" >
+		    <ion-item >
+			    <button ion-button block (tap)="SendSignUpOTP()" [disabled]="!termsandconidtion || registerOTPSent" >
 			      Validate
 			    </button>
 		    </ion-item>
 		    
 		    <ion-item [hidden]="!registerOTPSent">
-		      <ion-label stacked>Validation OTP</ion-label>
-		      <ion-badge class="pwd"  item-left>&nbsp; &nbsp; &nbsp;</ion-badge>
+		      <ion-label stacked>Enter OTP</ion-label>
+		      
 		      <ion-input [(ngModel)]="regData.otpcode" name="otpcode" type="number" placeholder="OTP Code" ></ion-input>
 		    </ion-item>
+		    
+
+	       
 		    
 		</ion-slide>
 		<ion-slide>
@@ -78,24 +79,8 @@
 		    
 		    <ion-item>
 		      <ion-label stacked>Email</ion-label>
-		      <ion-input [(ngModel)]="regData.email" name="email" type="email" placeholder="e.g support@vuqa.com" ></ion-input>
+		      <ion-input [(ngModel)]="regData.email" name="email" type="email" placeholder="e.g support@vuqa.co.ke" ></ion-input>
 		    </ion-item>
-
-		</ion-slide>
-		<ion-slide>
-
-			 <img [src]="photoImage"  class="avatar" id="photoImage" name="photoImage" /> 
-			 <!--<ion-col col-6 >
-			        <ion-card class="block">
-			          <img [src]="photoImage" *ngIf="photoImage" class="avatar"/>
-			          <ion-icon name="trash" class="deleteIcon" (click)="uploadActionSheet()"></ion-icon>
-			        </ion-card>
-			</ion-col>-->
-		
-		    <button ion-button block (click)="uploadActionSheet()">
-		      Add Photo
-		    </button>
-		   
 
 		</ion-slide>
 		<ion-slide>
@@ -107,29 +92,14 @@
 						Registration Complete!
 					</div>
 			</div>
-		    <ion-item>
-		      <h2><span>Thank You</span></h2> 
-		    </ion-item>
-		    <ion-item>
-		      <span>Your Subscription is being reviewed you will get a response within 24hrs</span> 
-		    </ion-item>
+		    <div class="levethreetext">
+				<strong>
+					<p>Thank you for registering with Vuqa, Your application is being reviewed</p>
+				</strong>
+			</div>
 
 		</ion-slide>
 	</ion-slides>
-	
-    <!-- <ion-item>
-      <ion-label stacked>Username</ion-label>
-      <ion-input [(ngModel)]="regData.username" name="username" type="text" placeholder="Your username" ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Password</ion-label>
-      <ion-input [(ngModel)]="regData.password" name="password" type="password" placeholder="Your password"></ion-input>
-    </ion-item>
-    
-    <button ion-button block type="submit">
-      SignUp
-    </button>
-     -->
     
   </form>
   

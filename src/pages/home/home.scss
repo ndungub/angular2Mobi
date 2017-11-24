@@ -37,6 +37,19 @@ page-home {
     padding-left: 0;
     padding-right: 0;
   }
+  
+  ion-spinner svg * {
+	  width: 28px;
+	  height: 28px;
+	  stroke: #444;
+	  fill: #222;
+  }
+  
+  .wrapper{
+  	padding: 0px;
+  }
+  
+  
 }
 
 

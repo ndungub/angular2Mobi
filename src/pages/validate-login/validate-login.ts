@@ -3,13 +3,16 @@ import { NgForm } from '@angular/forms';
 import { NavController, Nav, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { HomePage } from '../home/home';
+import { LoginchangepinPage } from '../loginchangepin/loginchangepin';
 
 //Services
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ShareServiceProvider } from '../../providers/share-service/share-service';
 
 import {Observable} from 'rxjs/Rx';
-import { RequestModel } from '../../model/requestModel'
+import { RequestModel } from '../../model/requestModel';
+
+import { Events } from 'ionic-angular';
 
 /**
  * Generated class for the ValidateLoginPage page.
@@ -26,10 +29,12 @@ export class ValidateLoginPage {
 	loading: any;
 	validatelogin = {};
 	submitted = false;
+	signInObj: any;
 	//response =  new RequestModel();
 	
-	constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController) {
-
+	constructor(public navCtrl: NavController, public nav: Nav, public authService: AuthServiceProvider, public shareService: ShareServiceProvider, public loadingCtrl: LoadingController, private alertCtrl: AlertController, private toastCtrl: ToastController, public events: Events) {
+		
+		
     }
 
   ionViewDidLoad() {
@@ -44,8 +49,10 @@ export class ValidateLoginPage {
 	    if (form.valid) {
 	    	this.showLoader();
 		    let validateOperation:Observable<RequestModel>;
-		    //authData = {};
+		 
 		    this.validatelogin['mobileno'] = this.shareService.getLoginSessionMobileNo();
+		    this.validatelogin['requirepinchange'] = this.shareService.getRequirePinChange();
+		    
 		    
 		    let authData = {data: this.validatelogin};
 		    this.loading.present().then(() => {
@@ -55,14 +62,21 @@ export class ValidateLoginPage {
 		    			response => {
 		                	this.loading.dismiss();
 		                	if(response.retcode == "000"){
+		                		if(response.results.requirepinchange == 0){
+		                			localStorage.setItem('devicechanged','false');
+		                			
+			                		this.shareService.setFullNames(response.results.name);
+			                		this.shareService.setIdno(response.results.idno);
+			                		this.shareService.setIdTypeDesc(response.results.idtypedesc);
+			                		this.shareService.setMedal(response.results.medal);
+			                		this.shareService.setEligibleAmount(response.results.eligibleamount);
+			                		this.shareService.setLoanLimit(response.results.loanlimit);
+			                		
+			                		this.nav.setRoot(HomePage);
+		                		}else{
+		                			this.nav.setRoot(LoginchangepinPage);
+		                		}
 		                		
-		                		this.shareService.setFullNames(response.results.name);
-		                		this.shareService.setIdno(response.results.idno);
-		                		this.shareService.setIdTypeDesc(response.results.idtypedesc);
-		                		this.shareService.setMedal(response.results.medal);
-		                		this.shareService.setEligibleAmount(response.results.eligibleamount);
-		                		
-		                		this.nav.setRoot(HomePage);
 		                	}else{
 		                		
 		                		this.showAlert(response.retmsg,"Vuqa");

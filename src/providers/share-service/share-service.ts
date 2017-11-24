@@ -18,6 +18,24 @@ export class ShareServiceProvider {
 	idtypedesc: string;
 	medal: string;
 	eligibleamount: number;
+	loanlimit: number;
+	
+
+	loanid: number;
+	loanamount: number;
+	loanstatus: string;
+	disbursedon: string;
+	loanbalance: number;
+	nextinstallmentdate: string;
+	isactive: string;
+	loanterm: number;
+	loanrate: number;
+	totalamount: number;
+	loaninterest: number;
+
+	detailloanid: number;
+
+	requirepinchange: number;
  
     constructor() {
         this.loginSessionMobileNo = '';
@@ -89,6 +107,124 @@ export class ShareServiceProvider {
   
     getEligibleAmount() {
         return this.eligibleamount;
+    }  
+
+    //Loan limit
+    setLoanLimit(loanlimit) {
+        this.loanlimit = loanlimit;       
+    }
+  
+    getLoanLimit() {
+        return this.loanlimit;
+    } 
+ 
+    //Loan ID
+    setLoanid(loanid) {
+        this.loanid = loanid;       
+    }
+  
+    getLoanid() {
+        return this.loanid;
+    }  
+    //loan Balance Amount
+    setLoanamount(loanamount) {
+        this.loanamount = loanamount;       
+    }
+  
+    getLoanamount() {
+        return this.loanamount;
+    }  
+    //Loan Balance Status
+    setLoanstatus(loanstatus) {
+        this.loanstatus = loanstatus;       
+    }
+  
+    getLoanstatus() {
+        return this.loanstatus;
+    }  
+    //loan balance disbursed on
+    setDisbursedon(disbursedon) {
+        this.disbursedon = disbursedon;       
+    }
+  
+    getDisbursedon() {
+        return this.disbursedon;
+    }  
+    //Loan balance
+    setLoanbalance(loanbalance) {
+        this.loanbalance = loanbalance;       
+    }
+  
+    getLoanbalance() {
+        return this.loanbalance;
+    }  
+    //Next installment
+    setNextInstallmentDate(nextinstallmentdate) {
+        this.nextinstallmentdate = nextinstallmentdate;       
+    }
+  
+    getNextInstallmentDate() {
+        return this.nextinstallmentdate;
+    } 
+    
+
+    //is Loan active
+    setIsactive(isactive) {
+        this.isactive = isactive;       
+    }
+  
+    getIsactive() {
+        return this.isactive;
+    }  
+    //Loan Term
+    setLoanTerm(loanterm) {
+        this.loanterm = loanterm;       
+    }
+  
+    getLoanTerm() {
+        return this.loanterm;
+    }  
+    //Loan Rate
+    setLoanRate(loanrate) {
+        this.loanrate = loanrate;       
+    }
+  
+    getLoanRate() {
+        return this.loanrate;
+    }  
+    //Loan Total Amount
+    setTotalAmount(totalamount) {
+        this.totalamount = totalamount;       
+    }
+  
+    getTotalAmount() {
+        return this.totalamount;
+    }  
+    //loan Interest
+    setLoanInterest(loaninterest) {
+        this.loaninterest = loaninterest;       
+    }
+  
+    getLoanInterest() {
+        return this.loaninterest;
+    } 
+
+    //Detail Loan Id
+    setDetailLoanId(detailloanid) {
+        this.detailloanid = detailloanid;       
+    }
+  
+    getDetailLoanId() {
+        return this.detailloanid;
+    }  
+
+    //Require password change
+    setRequirePinChange(requirepinchange) {
+        this.requirepinchange = requirepinchange;       
+    }
+  
+    getRequirePinChange() {
+        return this.requirepinchange;
     }  
     
 }

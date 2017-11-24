@@ -44,6 +44,8 @@
 		box-shadow: none;
 		width: 100%;
 	}
+	
+	
 }
 
 /*
@@ -149,4 +151,11 @@ h1.as-header-icon ion-icon{
     background: #262626;
 }
 
+
+.menu.menu-left{
+	width: calc(100% - 70px) !important;
+}
+.menu-open .menu-content{
+	transform: translate3d(calc(100% - 70px), 0px, 0px) !important;
+}
 

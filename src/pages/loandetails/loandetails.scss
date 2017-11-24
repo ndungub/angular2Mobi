@@ -1,0 +1,62 @@
+page-loandetails {
+	.loanbalance-title {
+		text-align: center;
+	}
+	.loanbalance-circular{
+ 		width: 200px;
+		height: 200px;
+		border: 10px solid #da1921;
+		background-color: #da1921;
+ 		background-image: url('assets/images/blank.png');
+ 		background-size: cover;
+ 		display: block;
+ 		border-radius: 100px;
+ 		-webkit-border-radius: 100px;
+ 		-moz-border-radius: 100px;
+ 		margin-left: 15%;
+ 	
+	}
+	.levelonetext{
+			font-size: 3rem;
+			text-align: center;
+	}
+	.levetwotext{
+		font-size: 2rem;
+		text-align: center;
+	}
+	.levethreetext{
+		font-size: 1rem;
+		text-align: center
+	}
+	.summarycol {
+		border: 1px solid #da1921;
+		
+		.headertext {	
+    		font-size: 1.5rem;
+    		color: #da1921;			
+		}
+		.contenttext {	
+    		font-size: 0.5rem;			
+		}
+	}
+	
+	.listcol {
+		.listheader {	
+    		font-size: 1.5rem;
+    		color: #da1921;			
+		}
+		.listcontent {	
+    		font-size: 0.5rem;
+    		padding-top: 12px;			
+		}
+	}
+	.centered {
+		position: absolute;
+		text-align: center;
+		top: 60%;
+		left: 45%;
+		transform: translate(-50%, -50%);
+	}
+
+}
+

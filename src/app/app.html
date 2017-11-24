@@ -9,20 +9,17 @@
 		<ion-card text-center class="hide-card" no-lines>
 		    <img src="assets/images/avatar.png" class="custom-avatar"/>
 		    <h2>
-		    	Boniface Ndungu 
-		    	<a href="http://example.com" class="round-button"><ion-icon name="create" item-right></ion-icon></a>
+		    	{{menuFullNames}}
+		    	<a href="#"  class="round-button" (click)="UploadPhoto()"><ion-icon name="create" item-right></ion-icon></a>
 		    </h2>
 		     <h2>
 		     	<ion-icon name="medal"></ion-icon>
-		    	Gold Member 
+		    	{{menuMedal}} 
 		    </h2>
 		   
 		</ion-card>
 		
 		<ion-list>
-	        <ion-list-header>
-	          Navigate
-	        </ion-list-header>
 			<ion-item *ngFor="let p of navigatePages" (click)="openPage(p)">
 				<ion-icon [name]="p.icon" item-left></ion-icon>
 				{{p.title}}

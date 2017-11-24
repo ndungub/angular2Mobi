@@ -5,7 +5,8 @@ page-register {
         margin: 20px auto;
     }
     
-	.register-logo {
+	
+    .register-logo {
 		position: relative;
 
 		img {
@@ -27,6 +28,9 @@ page-register {
 			margin-top: 0;
 		}
 	}
+    .termscheckbox{
+    	font-size: 1.3rem;
+    }
 
     
 	.avatar {

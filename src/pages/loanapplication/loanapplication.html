@@ -4,14 +4,10 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
 <ion-header>
 
-  <ion-navbar hideBackButton>
-    <ion-buttons left>
-        <button ion-button (click)="loanapplicationBack()">
-            <ion-icon  name="arrow-back"></ion-icon>
-        </button>
-    </ion-buttons>
+  <ion-navbar>
     <ion-title>Loan Application</ion-title>
   </ion-navbar>
 
@@ -20,36 +16,61 @@
 
 <ion-content padding>
 
-	<form class="loanapplication-form" (submit)="doLoanApplication()">
+	<form class="loanapplication-form" #loanapplicationForm="ngForm" >
 		<ion-list >
+			<ion-row align-items-stretch>
+				<ion-col col-12  col-12 col-md-6 align-self-stretch align-self-center  >
+					
+					<div class="loanapplication-circular"></div>
+					<div class="loanapplication-title levetwotext"><strong>You qualify for up to</strong></div>
+					<div class="levelonetext"><strong>{{qualifiedAmout}}</strong></div>
+					<div class="levethreetext">
+							<strong>
+								<p>When you keep your account in good standing and repay loans, you can grow your limit up to KES 50,000</p>
+							</strong>
+					</div>
+				</ion-col>
+			</ion-row>
 			<ion-row>
 				<ion-col col-12>
 					<ion-item>
-						<div class="application-logo">
-							<img src="assets/images/application.png" />
-						</div>
-					</ion-item>
-					<ion-item>
-						<div class="login-title" text-wrap>
-							<p>You Qualify up to</p>
-							<span><strong>KES 5,000</strong></span>
-						</div>
-						
-					</ion-item>
-					<ion-item>
-						<ion-label stacked>Loan Amount</ion-label>
-						<ion-select [(ngModel)]="selectedvalue" name="loanamount">
-							<ion-option *ngFor="let item of loanamounts" value="{{item.loanamountIndex}}" >{{item.loanamount}}</ion-option>
-						</ion-select>
-					</ion-item>
-					<ion-item>
-						<ion-label stacked>Repayment Period</ion-label>
-						<ion-select [(ngModel)]="selectedvalue" name="loanperiod">
-							<ion-option *ngFor="let item of loanperiods" value="{{item.periodIndex}}" >{{item.periodNum}}</ion-option>
+						<ion-label stacked>Choose Loam Amount</ion-label>
+						<ion-select [(ngModel)]="selectedLoanAmount" name="loanamount" (ngModelChange)="optionsLoanAmount(item)">
+							<ion-option *ngFor="let item of loanamounts"  [value]="item" >{{item.loanamount}}</ion-option>
+							
 						</ion-select>
 					</ion-item>
 				</ion-col>
 			</ion-row>
+			
+			<ion-row>
+				<ion-col col-12>
+					<ion-item>
+						<ion-label stacked>Choose Period</ion-label>
+						<ion-select [(ngModel)]="selectedLoanPeriod" name="loanperiod" >
+							<ion-option *ngFor="let item of loanperiods" [value]="item" >{{item.periodNum}}</ion-option>
+						</ion-select>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+			
+			<ion-row responsive-sm>
+				<ion-col >
+					 <button  ion-button block (click)="doLoanApplication(loanapplicationForm)" type="submit" block>
+				      	Apply Loan
+				     </button> 
+				</ion-col>
+			</ion-row>	
 		</ion-list>
 	</form>
 </ion-content>
+<ion-footer primary>
+   <ion-toolbar color="primary">
+	    <ion-buttons left>
+		      <button ion-button icon-Left (tap)="loanapplicationBack()">
+		      	<ion-icon name="arrow-back"></ion-icon>
+		        	Back
+		      </button>
+    	</ion-buttons>
+  </ion-toolbar>
+</ion-footer>
